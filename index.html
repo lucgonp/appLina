@@ -3,25 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mala da Fisio</title>
+<title>Cuidados do Bebê</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Mala">
-<meta name="theme-color" content="#EEF3F8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#141B2E" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-title" content="Cuidados">
+<meta name="theme-color" content="#FFF4F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#24141F" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
+<script src="config.js"></script>
 <style>
 :root{
-  --bg:#EEF3F8; --surface:#FFFFFF; --ink:#1D2A44; --muted:#6B7891;
-  --line:#D8E0EB; --navy:#2B3A67; --ok:#2E9E6B; --ok-soft:#DDF2E8; --danger:#C93C55;
+  --bg:#FFF4F7; --surface:#FFFFFF; --ink:#4A2340; --muted:#9A7A8E; --line:#F6DCE5;
+  --rose:#E8578C; --rose-soft:#FFE1EB;
+  --lilac:#8E6FD8; --lilac-soft:#EEE7FF;
+  --mint:#2F9E7C; --mint-soft:#DDF5EC;
+  --sun:#B97A0C; --sun-soft:#FFF2D1;
+  --danger:#D6455D; --on-acc:#FFFFFF;
+  --tabh:70px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:#141B2E; --surface:#1E2740; --ink:#EEF2F9; --muted:#9AA6BF;
-    --line:#2E3A58; --navy:#8FA4E8; --ok:#4CC08A; --ok-soft:#1D3B33; --danger:#F07088;
+    --bg:#24141F; --surface:#331D2C; --ink:#FBEAF1; --muted:#C7A3B6; --line:#4A2B3F;
+    --rose:#FF7FAA; --rose-soft:#4A2236;
+    --lilac:#B9A2FF; --lilac-soft:#34284F;
+    --mint:#63D3AE; --mint-soft:#1E3A31;
+    --sun:#F2C04E; --sun-soft:#3D3020;
+    --danger:#FF7F95; --on-acc:#24141F;
     color-scheme: dark;
   }
 }
@@ -29,247 +39,783 @@
 html,body{margin:0;height:100%}
 body{
   background:var(--bg); color:var(--ink);
-  font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system, sans-serif;
   font-size:17px; line-height:1.35;
   padding: env(safe-area-inset-top,0) env(safe-area-inset-right,0) 0 env(safe-area-inset-left,0);
   -webkit-user-select:none; user-select:none;
 }
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-input{font:inherit;color:var(--ink)}
-:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
-.wrap{max-width:560px;margin:0 auto;padding:12px 18px calc(110px + env(safe-area-inset-bottom,0))}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+input{font:inherit;color:var(--ink);-webkit-user-select:text;user-select:text}
+:focus-visible{outline:3px solid var(--acc,var(--rose));outline-offset:2px}
+[hidden]{display:none!important}
 
-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0 4px}
-.listbtn{display:flex;align-items:center;gap:6px;font-size:28px;font-weight:700;letter-spacing:-.02em;padding:6px 0;text-align:left}
-.listbtn svg{flex:none;opacity:.6}
-.pill{font-weight:600;color:var(--navy);padding:10px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.view{max-width:560px;margin:0 auto;padding:10px 18px calc(var(--tabh) + 110px + env(safe-area-inset-bottom,0))}
+#v-mala{--acc:var(--rose);--acc-soft:var(--rose-soft)}
+#v-farm{--acc:var(--lilac);--acc-soft:var(--lilac-soft)}
+#v-task{--acc:var(--mint);--acc-soft:var(--mint-soft)}
+#v-fam{--acc:var(--rose);--acc-soft:var(--rose-soft)}
 
-/* progresso: o elemento marcante */
-.bag{margin:14px 0 18px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px 18px 16px}
-.count{display:flex;align-items:baseline;gap:8px}
-.count b{font-size:44px;line-height:1;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.count span{color:var(--muted);font-weight:600}
-.bar{margin-top:14px;height:14px;border-radius:999px;background:var(--line);overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--navy);border-radius:999px;transition:width .35s ease,background .35s}
-.bag.full .bar i{background:var(--ok)}
-.bag.full{background:var(--ok-soft);border-color:transparent}
-.bag.full .count span{color:var(--ok)}
-.missing{margin:10px 0 0;color:var(--muted);font-size:15px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:8px 0 6px;min-height:64px}
+.hello{display:block;font-size:15px;font-weight:700;color:var(--acc);margin-bottom:2px}
+h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.1}
+.listbtn{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+.listbtn .t{display:flex;align-items:center;gap:6px}
+.listbtn svg{flex:none;color:var(--acc)}
+.pill{font-weight:700;color:var(--acc);padding:10px 16px;border-radius:999px;background:var(--acc-soft);white-space:nowrap}
+.card{background:var(--surface);border-radius:26px;box-shadow:0 2px 0 var(--line)}
+.empty{padding:32px 8px;text-align:center;color:var(--muted);font-weight:600}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 
-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.item{display:flex;align-items:center;gap:14px;width:100%;min-height:60px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-align:left;font-weight:600}
-.dot{flex:none;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--muted);display:grid;place-items:center;transition:background .15s,border-color .15s}
-.dot svg{opacity:0;transition:opacity .15s}
-.item.done{background:transparent}
-.item.done .dot{background:var(--ok);border-color:var(--ok)}
-.item.done .dot svg{opacity:1}
-.item.done .name{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}
-.item:active{transform:scale(.985)}
+/* ---------- Malinha ---------- */
+.bag{margin:12px 0 18px;padding:20px;background:var(--acc-soft);border-radius:28px;position:relative;overflow:hidden}
+.bag::after{content:"";position:absolute;right:-26px;top:-26px;width:110px;height:110px;border-radius:50%;background:var(--surface);opacity:.45}
+.count{display:flex;align-items:baseline;gap:8px;position:relative;z-index:1}
+.count b{font-size:46px;line-height:1;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--acc)}
+.count span{font-weight:700}
+.bar{margin-top:14px;height:16px;border-radius:999px;background:var(--surface);overflow:hidden;position:relative;z-index:1}
+.bar i{display:block;height:100%;width:0;border-radius:999px;transition:width .4s ease;
+  background:repeating-linear-gradient(-45deg,var(--acc) 0 10px,color-mix(in srgb,var(--acc) 80%,#fff) 10px 20px)}
+.bag.full{background:var(--mint-soft)}
+.bag.full .count b{color:var(--mint)}
+.bag.full .bar i{background:var(--mint)}
+.missing{margin:10px 0 0;font-size:15px;font-weight:600;position:relative;z-index:1}
 
-/* modo edição */
+.row{display:flex;align-items:center;gap:14px;width:100%;min-height:62px;padding:12px 16px;background:var(--surface);border-radius:20px;text-align:left;font-weight:700;box-shadow:0 2px 0 var(--line)}
+.row:active{transform:scale(.98)}
+.heart{flex:none;width:32px;height:32px;display:grid;place-items:center}
+.heart path{fill:transparent;stroke:var(--acc);stroke-width:2.2;transition:fill .18s}
+.done .heart path{fill:var(--acc)}
+.done .heart svg{animation:pop .28s ease}
+@keyframes pop{50%{transform:scale(1.25)}}
+.done .name{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}
+.row.done{background:transparent;box-shadow:none;outline:2px dashed var(--line);outline-offset:-2px}
 .erow{display:flex;align-items:center;gap:8px}
-.erow input{flex:1;min-width:0;min-height:54px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-weight:600;-webkit-user-select:text;user-select:text}
-.del{flex:none;width:54px;height:54px;border-radius:14px;color:var(--danger);display:grid;place-items:center;border:1px solid var(--line);background:var(--surface)}
-.add{display:flex;gap:8px;margin-top:14px}
-.add input{flex:1;min-width:0;min-height:56px;padding:0 16px;border-radius:16px;border:1.5px dashed var(--muted);background:transparent;-webkit-user-select:text;user-select:text}
-.add button{min-width:56px;border-radius:16px;background:var(--navy);color:var(--bg);font-size:28px;font-weight:700}
-.empty{padding:28px 8px;text-align:center;color:var(--muted)}
+.erow input{flex:1;min-width:0;min-height:56px;padding:0 16px;border-radius:18px;border:2px solid var(--line);background:var(--surface);font-weight:700}
+.ibtn{flex:none;width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:var(--surface);box-shadow:0 2px 0 var(--line);color:var(--acc)}
+.ibtn.d{color:var(--danger)}
+.add{display:flex;gap:8px;margin:14px 0}
+.add input{flex:1;min-width:0;min-height:58px;padding:0 18px;border-radius:20px;border:2px dashed color-mix(in srgb,var(--acc) 55%,transparent);background:var(--surface)}
+.add button{min-width:58px;border-radius:20px;background:var(--acc);color:var(--on-acc);font-size:30px;font-weight:800}
+.dock{position:fixed;left:0;right:0;bottom:calc(var(--tabh) + 14px + env(safe-area-inset-bottom,0));padding:10px 18px 0;z-index:4;pointer-events:none}
+.dock .in{max-width:560px;margin:0 auto}
+.big{width:100%;min-height:60px;border-radius:22px;background:var(--acc,var(--rose));color:var(--on-acc);font-weight:800;font-size:18px;pointer-events:auto;box-shadow:0 6px 18px color-mix(in srgb,var(--acc,var(--rose)) 35%,transparent)}
+.big:disabled{opacity:.4;box-shadow:none}
 
-footer{position:fixed;left:0;right:0;bottom:0;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0));background:linear-gradient(transparent,var(--bg) 30%)}
-footer .in{max-width:560px;margin:0 auto}
-.reset{width:100%;min-height:58px;border-radius:18px;background:var(--navy);color:var(--bg);font-weight:700;font-size:18px}
-.reset:disabled{opacity:.35}
+/* ---------- Farmacinha ---------- */
+.meds{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+.med{padding:18px}
+.med.complete{background:var(--mint-soft);box-shadow:none}
+.med.early{background:var(--sun-soft);box-shadow:none}
+.mhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.mname{font-size:22px;font-weight:800;margin:0}
+.mdesc{color:var(--muted);font-size:15px;font-weight:600;margin:2px 0 0}
+.drops{display:inline-flex;align-items:center;gap:4px;background:var(--lilac-soft);color:var(--lilac);font-weight:800;padding:3px 10px;border-radius:999px;font-size:14px;margin-top:6px}
+.mstat{margin:14px 0 4px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.since{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.since small{display:block;font-size:14px;font-weight:600;color:var(--muted);letter-spacing:0}
+.today{display:flex;align-items:center;gap:6px;font-weight:800;font-variant-numeric:tabular-nums}
+.pips{display:flex;gap:3px}
+.pips svg path{fill:var(--line)}
+.pips .on path{fill:var(--lilac)}
+.complete .pips .on path{fill:var(--mint)}
+.note{font-size:15px;font-weight:700;margin:6px 0 0;color:var(--lilac)}
+.med.early .note{color:var(--sun)}
+.med.complete .note{color:var(--mint)}
+.dose{margin-top:14px;width:100%;min-height:62px;border-radius:20px;background:var(--lilac);color:var(--on-acc);font-weight:800;font-size:18px}
+.med.complete .dose{background:var(--surface);color:var(--mint)}
+.hist{margin-top:10px}
+.hist summary{color:var(--lilac);font-weight:700;font-size:15px;padding:6px 0;list-style:none;cursor:pointer}
+.hist summary::-webkit-details-marker{display:none}
+.hist ul{gap:0}
+.hist li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:2px dotted var(--line);font-size:15px;font-weight:600}
+.hist li button{color:var(--danger);font-size:14px;font-weight:700;padding:6px 8px}
 
-/* folha de listas */
-.scrim{position:fixed;inset:0;background:rgba(10,15,30,.45);display:none;align-items:flex-end;z-index:10}
+/* ---------- Pendências ---------- */
+.seg{display:flex;background:var(--acc-soft);border-radius:18px;padding:4px;margin:4px 0 0}
+.seg button{flex:1;min-height:46px;border-radius:14px;font-weight:700;color:var(--acc)}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 0 var(--line)}
+.task{display:flex;align-items:center;gap:4px;background:var(--surface);border-radius:20px;padding-right:6px;box-shadow:0 2px 0 var(--line)}
+.task .row{box-shadow:none;background:transparent;flex:1;min-width:0;outline:0}
+.task .name{overflow-wrap:anywhere}
+.task.done{background:transparent;box-shadow:none;outline:2px dashed var(--line);outline-offset:-2px}
+.sbtn{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:var(--muted)}
+.sbtn.d{color:var(--danger)}
+
+/* ---------- Família ---------- */
+.fcard{padding:20px;margin-top:14px}
+.fcard h2{margin:0 0 6px;font-size:20px}
+.fcard p{margin:0 0 14px;color:var(--muted);font-weight:600;font-size:15px}
+.code{font-size:30px;font-weight:800;letter-spacing:.06em;text-align:center;padding:16px;border-radius:20px;background:var(--rose-soft);color:var(--rose);margin-bottom:12px;font-variant-numeric:tabular-nums;-webkit-user-select:all;user-select:all}
+.status{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:14px}
+.status i{width:10px;height:10px;border-radius:50%;background:var(--muted)}
+.status.ok i{background:var(--mint)} .status.ok{color:var(--mint)}
+.status.err i{background:var(--danger)} .status.err{color:var(--danger)}
+.or{text-align:center;color:var(--muted);font-weight:700;margin:14px 0}
+.field{display:block;margin-bottom:12px}
+.field span{display:block;font-size:14px;font-weight:700;color:var(--muted);margin:0 0 6px 6px}
+.field input{width:100%;min-height:56px;padding:0 16px;border-radius:18px;border:2px solid var(--line);background:var(--surface);font-weight:700}
+.ghost{width:100%;min-height:56px;border-radius:20px;background:var(--surface);border:2px solid var(--line);font-weight:700}
+.ghost.d{color:var(--danger)}
+
+/* ---------- Tab bar ---------- */
+nav.tabs{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0));z-index:5}
+nav.tabs .in{max-width:536px;margin:0 auto;display:flex;height:var(--tabh);background:var(--surface);border-radius:26px;padding:6px;box-shadow:0 6px 24px rgba(74,35,64,.14)}
+nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11.5px;font-weight:700;color:var(--muted);border-radius:20px;transition:background .2s,color .2s}
+nav.tabs button[aria-selected="true"]{background:var(--tc-soft);color:var(--tc)}
+nav.tabs [data-tab=mala]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
+nav.tabs [data-tab=farm]{--tc:var(--lilac);--tc-soft:var(--lilac-soft)}
+nav.tabs [data-tab=task]{--tc:var(--mint);--tc-soft:var(--mint-soft)}
+nav.tabs [data-tab=fam]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
+nav.tabs .ico{position:relative;display:grid;place-items:center}
+nav.tabs .badge{position:absolute;top:-6px;left:16px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--rose);color:#fff;font-size:11px;line-height:18px;text-align:center}
+nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-radius:50%;background:var(--mint);border:2px solid var(--surface)}
+
+/* ---------- Sheet ---------- */
+.scrim{position:fixed;inset:0;background:rgba(74,35,64,.4);display:none;align-items:flex-end;z-index:10}
 .scrim.open{display:flex}
-.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0));max-height:80vh;overflow:auto;animation:up .22s ease}
+.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:30px 30px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0));max-height:86vh;overflow:auto;animation:up .24s ease}
 @keyframes up{from{transform:translateY(40px);opacity:.4}}
-.sheet h2{margin:4px 0 14px;font-size:20px}
-.lrow{display:flex;gap:8px;margin-bottom:8px}
-.lrow .pick{flex:1;text-align:left;min-height:56px;padding:0 16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-weight:600;display:flex;align-items:center;justify-content:space-between}
-.lrow .pick.cur{border:2px solid var(--navy)}
-.lrow .sm{width:56px;border-radius:16px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}
-.lrow .sm.d{color:var(--danger)}
-.new{width:100%;min-height:56px;margin-top:6px;border-radius:16px;border:1.5px dashed var(--muted);font-weight:600;color:var(--navy)}
+.sheet h2{margin:4px 0 14px;font-size:21px}
+.lrow{display:flex;gap:8px;margin-bottom:10px}
+.lrow .pick{flex:1;text-align:left;min-height:58px;padding:0 18px;border-radius:20px;background:var(--surface);font-weight:700;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 0 var(--line)}
+.lrow .pick.cur{outline:3px solid var(--rose);outline-offset:-3px}
+.new{width:100%;min-height:58px;margin-top:6px;border-radius:20px;border:2px dashed var(--rose);font-weight:700;color:var(--rose)}
+.two{display:flex;gap:10px}.two .field{flex:1}
+.actions{display:flex;gap:10px;margin-top:8px}
+.actions .ghost{flex:1}
+.actions .big{flex:2}
+.toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 30px + env(safe-area-inset-bottom,0));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;z-index:20;animation:up .2s ease}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<!-- ================= MALINHA ================= -->
+<main class="view" id="v-mala">
   <header>
     <button class="listbtn" id="openLists" aria-label="Trocar lista">
-      <span id="title"></span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+      <span class="hello" data-hello></span>
+      <span class="t"><h1 id="malaTitle"></h1>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
     </button>
-    <button class="pill" id="editBtn">Editar</button>
+    <button class="pill" id="malaEdit">Editar</button>
   </header>
-
   <section class="bag" id="bag" aria-live="polite">
-    <div class="count"><b id="num">0</b><span id="lbl"></span></div>
-    <div class="bar"><i id="fill"></i></div>
-    <p class="missing" id="missing"></p>
+    <div class="count"><b id="bagNum">0</b><span id="bagLbl"></span></div>
+    <div class="bar"><i id="bagFill"></i></div>
+    <p class="missing" id="bagMissing"></p>
   </section>
-
-  <ul id="list"></ul>
-  <div class="add" id="addBox" hidden>
-    <input id="newItem" placeholder="Novo item" enterkeyhint="done" autocomplete="off">
-    <button id="addBtn" aria-label="Adicionar item">+</button>
+  <ul id="malaList"></ul>
+  <div class="add" id="malaAdd" hidden>
+    <input id="malaNew" placeholder="Novo item" enterkeyhint="done" autocomplete="off">
+    <button id="malaAddBtn" aria-label="Adicionar item">+</button>
   </div>
-</div>
+  <div class="dock" id="malaDock"><div class="in"><button class="big" id="malaReset">Resetar mala</button></div></div>
+</main>
 
-<footer><div class="in"><button class="reset" id="resetBtn">Esvaziar mala</button></div></footer>
+<!-- ================= FARMACINHA ================= -->
+<main class="view" id="v-farm" hidden>
+  <header>
+    <div><span class="hello" data-hello></span><h1>Farmacinha</h1></div>
+    <button class="pill" id="medAdd">+ Remédio</button>
+  </header>
+  <div class="meds" id="medList"></div>
+</main>
 
-<div class="scrim" id="scrim">
-  <div class="sheet" role="dialog" aria-label="Listas">
-    <h2>Listas</h2>
-    <div id="lists"></div>
-    <button class="new" id="newList">+ Nova lista</button>
+<!-- ================= PENDÊNCIAS ================= -->
+<main class="view" id="v-task" hidden>
+  <header><div><span class="hello" data-hello></span><h1>Pendências</h1></div></header>
+  <div class="add">
+    <input id="taskNew" placeholder="Nova pendência" enterkeyhint="done" autocomplete="off">
+    <button id="taskAddBtn" aria-label="Adicionar pendência">+</button>
   </div>
-</div>
+  <div class="seg" role="tablist">
+    <button id="fTodo" role="tab" aria-selected="true"></button>
+    <button id="fDone" role="tab" aria-selected="false"></button>
+  </div>
+  <ul id="taskList" style="margin-top:12px"></ul>
+</main>
 
-<script>
-const KEY = 'mala:v1';
-const uid = () => Math.random().toString(36).slice(2, 9);
-const mk = names => names.map(n => ({ id: uid(), name: n, done: false }));
-const seed = () => {
-  const id = uid();
-  return {
-    current: id,
-    lists: [{ id, name: 'Fisioterapia', items: mk([
-      'Fraldas', 'Lenços umedecidos', 'Pomada', 'Trocador portátil',
-      'Mamadeira', 'Leite / fórmula', 'Água', 'Troca de roupa completa',
-      'Paninho de boca', 'Brinquedo favorito', 'Carteirinha do plano', 'Saquinho para roupa suja'
-    ]) }]
-  };
-};
+<!-- ================= FAMÍLIA ================= -->
+<main class="view" id="v-fam" hidden>
+  <header><div><span class="hello" data-hello></span><h1>Família</h1></div></header>
+  <section class="card fcard">
+    <label class="field" style="margin:0"><span>Nome do bebê</span>
+      <input id="babyName" placeholder="Ex.: Lina" autocomplete="off" maxlength="30"></label>
+  </section>
+  <div id="famBox"></div>
+</main>
 
-let state;
-try { state = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { state = seed(); }
-let editing = false;
+<!-- ================= TAB BAR ================= -->
+<nav class="tabs" role="tablist"><div class="in">
+  <button data-tab="mala" role="tab" aria-selected="true">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="12.5" rx="4"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/><path d="M12 17.2s-2.6-1.5-2.6-3.1c0-.9.7-1.5 1.4-1.5.6 0 1 .3 1.2.7.2-.4.6-.7 1.2-.7.7 0 1.4.6 1.4 1.5 0 1.6-2.6 3.1-2.6 3.1z" fill="currentColor" stroke="none"/></svg></span>
+    Malinha
+  </button>
+  <button data-tab="farm" role="tab" aria-selected="false">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg><span class="badge" id="farmBadge" hidden></span></span>
+    Remédios
+  </button>
+  <button data-tab="task" role="tab" aria-selected="false">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.9l-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z"/></svg><span class="badge" id="taskBadge" hidden></span></span>
+    Pendências
+  </button>
+  <button data-tab="fam" role="tab" aria-selected="false">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M2.5 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5M13.5 15.3c.9-.8 1.9-1.3 3-1.3 2.2 0 3.9 1.6 4.4 4"/></svg><span class="sync" id="syncDot" hidden></span></span>
+    Família
+  </button>
+</div></nav>
 
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
-const cur = () => state.lists.find(l => l.id === state.current) || state.lists[0];
+<div class="scrim" id="scrim"><div class="sheet" id="sheet" role="dialog"></div></div>
+
+<script type="module">
+/* =========================================================
+   Utilidades
+   ========================================================= */
 const $ = id => document.getElementById(id);
-const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-
-const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
-const trash = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
-const pen = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
-
-function render() {
-  const l = cur();
-  state.current = l.id;
-  $('title').textContent = l.name;
-  const total = l.items.length, done = l.items.filter(i => i.done).length;
-  $('num').textContent = total ? `${done}/${total}` : '0';
-  const full = total > 0 && done === total;
-  $('lbl').textContent = !total ? 'lista vazia' : full ? 'mala pronta' : 'na mala';
-  $('bag').classList.toggle('full', full);
-  $('fill').style.width = total ? (done / total * 100) + '%' : '0';
-  const left = l.items.filter(i => !i.done).map(i => i.name);
-  $('missing').textContent = !full && done > 0 && left.length <= 3 ? 'Falta: ' + left.join(', ') : '';
-  $('resetBtn').disabled = done === 0 || editing;
-  $('editBtn').textContent = editing ? 'Pronto' : 'Editar';
-  $('addBox').hidden = !editing;
-
-  const ul = $('list');
-  if (!total && !editing) {
-    ul.innerHTML = '<li class="empty">Nenhum item ainda. Toque em Editar para adicionar.</li>';
-    return;
-  }
-  ul.innerHTML = l.items.map(i => editing
-    ? `<li class="erow"><input data-id="${i.id}" value="${esc(i.name)}" aria-label="Nome do item"><button class="del" data-del="${i.id}" aria-label="Remover ${esc(i.name)}">${trash}</button></li>`
-    : `<li><button class="item${i.done ? ' done' : ''}" data-id="${i.id}" aria-pressed="${i.done}"><span class="dot">${check}</span><span class="name">${esc(i.name)}</span></button></li>`
-  ).join('');
-}
-
-$('list').addEventListener('click', e => {
-  const l = cur();
-  const del = e.target.closest('[data-del]');
-  if (del) {
-    l.items = l.items.filter(i => i.id !== del.dataset.del);
-    save(); render(); return;
-  }
-  const b = e.target.closest('.item');
-  if (b) {
-    const it = l.items.find(i => i.id === b.dataset.id);
-    it.done = !it.done; save(); render();
-  }
-});
-
-$('list').addEventListener('change', e => {
-  if (e.target.matches('input[data-id]')) {
-    const it = cur().items.find(i => i.id === e.target.dataset.id);
-    const v = e.target.value.trim();
-    if (v) it.name = v; else e.target.value = it.name;
-    save();
-  }
-});
-
-function addItem() {
-  const v = $('newItem').value.trim();
-  if (!v) return;
-  cur().items.push({ id: uid(), name: v, done: false });
-  $('newItem').value = '';
-  save(); render(); $('newItem').focus();
-}
-$('addBtn').onclick = addItem;
-$('newItem').addEventListener('keydown', e => { if (e.key === 'Enter') addItem(); });
-
-$('editBtn').onclick = () => {
-  if (editing) document.activeElement?.blur();
-  editing = !editing; render();
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const pad = n => String(n).padStart(2, '0');
+const hhmm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
+const dayKey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const ago = ms => {
+  const m = Math.floor(ms / 60000);
+  if (m < 1) return 'agora há pouco';
+  if (m < 60) return `há ${m} min`;
+  const h = Math.floor(m / 60), r = m % 60;
+  if (h < 48) return `há ${h}h${r ? ' ' + pad(r) + 'min' : ''}`;
+  return `há ${Math.floor(h / 24)} dias`;
+};
+const when = ts => {
+  const d = new Date(ts), now = new Date(), y = new Date(now); y.setDate(now.getDate() - 1);
+  if (dayKey(d) === dayKey(now)) return 'Hoje, ' + hhmm(d);
+  if (dayKey(d) === dayKey(y)) return 'Ontem, ' + hhmm(d);
+  return pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + ', ' + hhmm(d);
+};
+const lsGet = (k, f) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : f; } catch { return f; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+const toast = msg => {
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2200);
+};
+const HEART = 'M12 20.5s-7.6-4.6-9.5-9.3C1 7.7 3.2 4 6.8 4c2.1 0 3.5 1.1 4.3 2.4.4.7 1.4.7 1.8 0C13.7 5.1 15.1 4 17.2 4c3.6 0 5.8 3.7 4.3 7.2-1.9 4.7-9.5 9.3-9.5 9.3z';
+const ICON = {
+  heart: `<span class="heart"><svg width="30" height="30" viewBox="0 0 24 24"><path d="${HEART}" stroke-linejoin="round"/></svg></span>`,
+  pip: on => `<svg class="${on ? 'on' : ''}" width="16" height="16" viewBox="0 0 24 24"><path d="${HEART}"/></svg>`,
+  trash: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+  pen: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>'
 };
 
-$('resetBtn').onclick = () => {
-  if (!confirm('Desmarcar todos os itens de "' + cur().name + '"?')) return;
-  cur().items.forEach(i => i.done = false);
-  save(); render();
+/* =========================================================
+   Store — mesma API para modo local e modo família (Firestore)
+   Coleções: lists, items, meds, doses, tasks, meta
+   ========================================================= */
+const COLS = ['lists', 'items', 'meds', 'doses', 'tasks', 'meta'];
+const LOCAL_KEY = 'cuidados:v3', MIRROR_KEY = 'cuidados:mirror', FAM_KEY = 'cuidados:family';
+const empty = () => Object.fromEntries(COLS.map(c => [c, {}]));
+
+const Store = {
+  data: empty(),
+  family: lsGet(FAM_KEY, null),
+  status: 'local',      // local | connecting | ok | error
+  error: '',
+  subs: [],
+  on(fn) { this.subs.push(fn); },
+  emit() {
+    lsSet(this.family ? MIRROR_KEY : LOCAL_KEY, this.data);
+    this.subs.forEach(f => f());
+  },
+  all(c) { return Object.values(this.data[c]); },
+  get(c, id) { return this.data[c][id]; },
+  put(c, doc) { this.putMany(c, [doc]); },
+  putMany(c, docs) {
+    docs.forEach(d => { this.data[c][d.id] = d; });
+    this.emit();
+    if (this.family) Cloud.write(docs.map(d => ({ type: 'set', c, d })));
+  },
+  delMany(ops) { // ops: [[col, id], ...]
+    ops.forEach(([c, id]) => delete this.data[c][id]);
+    this.emit();
+    if (this.family) Cloud.write(ops.map(([c, id]) => ({ type: 'del', c, id })));
+  },
+  del(c, id) { this.delMany([[c, id]]); }
 };
 
-/* listas */
-function renderLists() {
-  $('lists').innerHTML = state.lists.map(l => {
-    const d = l.items.filter(i => i.done).length;
-    return `<div class="lrow">
-      <button class="pick${l.id === state.current ? ' cur' : ''}" data-pick="${l.id}"><span>${esc(l.name)}</span><span style="color:var(--muted);font-size:15px">${d}/${l.items.length}</span></button>
-      <button class="sm" data-ren="${l.id}" aria-label="Renomear ${esc(l.name)}">${pen}</button>
-      <button class="sm d" data-rm="${l.id}" aria-label="Apagar ${esc(l.name)}">${trash}</button>
-    </div>`;
-  }).join('');
+/* ---------- dados iniciais / migração da versão anterior ---------- */
+const PRESET = ['Fraldas descartáveis', 'Lenços umedecidos', 'Pomada', 'Trocador portátil', 'Mamadeira',
+  'Leite / fórmula', 'Água', 'Troca de roupa completa', 'Paninho de boca', 'Brinquedo favorito',
+  'Carteira de vacinação / plano', 'Saquinho para roupa suja'];
+
+function seedData() {
+  const d = empty(), lid = uid();
+  d.lists[lid] = { id: lid, name: 'Fisioterapia', order: 0 };
+  PRESET.forEach((n, i) => { const id = uid() + i; d.items[id] = { id, listId: lid, name: n, done: false, order: i }; });
+  [['Agendar retorno pediátrico'], ['Comprar fralda tamanho M']].forEach(([t], i) => {
+    const id = uid() + 't' + i; d.tasks[id] = { id, text: t, done: false, created: Date.now() - i };
+  });
+  return d;
 }
-const openSheet = () => { renderLists(); $('scrim').classList.add('open'); };
-const closeSheet = () => $('scrim').classList.remove('open');
-$('openLists').onclick = openSheet;
+function migrateLegacy() {
+  const mala = lsGet('mala:v1', null), farm = lsGet('farmacia:v1', null), tar = lsGet('tarefas:v1', null);
+  if (!mala && !farm && !tar) return null;
+  const d = mala ? empty() : seedData();
+  if (mala) (mala.lists || []).forEach((l, li) => {
+    d.lists[l.id] = { id: l.id, name: l.name, order: li };
+    l.items.forEach((it, i) => { d.items[it.id] = { id: it.id, listId: l.id, name: it.name, done: !!it.done, order: i }; });
+  });
+  if (farm) (farm.meds || []).forEach((m, mi) => {
+    d.meds[m.id] = { id: m.id, name: m.name, drops: m.drops, perDay: m.perDay, times: m.times || '', order: mi };
+    (m.log || []).forEach((ts, i) => { const id = m.id + '-' + ts + '-' + i; d.doses[id] = { id, medId: m.id, ts }; });
+  });
+  if (tar) { d.tasks = {}; (tar.items || []).forEach((t, i) => { d.tasks[t.id] = { id: t.id, text: t.text, done: !!t.done, created: Date.now() - i }; }); }
+  return d;
+}
+
+/* =========================================================
+   Cloud — Firebase Firestore (plano gratuito)
+   ========================================================= */
+const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
+const Cloud = {
+  fs: null, db: null, unsubs: [], ready: null, _resolve: null,
+  configured: () => !!(window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.projectId),
+  async init() {
+    if (this.db) return;
+    const [{ initializeApp }, { getAuth, signInAnonymously }, fs] = await Promise.all([
+      import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')
+    ]);
+    const app = initializeApp(window.FIREBASE_CONFIG);
+    await signInAnonymously(getAuth(app));
+    let db;
+    try { db = fs.initializeFirestore(app, { localCache: fs.persistentLocalCache({ tabManager: fs.persistentSingleTabManager() }) }); }
+    catch { db = fs.getFirestore(app); }
+    this.fs = fs; this.db = db;
+  },
+  ref(fid, c, id) { return this.fs.doc(this.db, 'families', fid, c, id); },
+  async exists(fid) {
+    await this.init();
+    const snap = await this.fs.getDoc(this.ref(fid, 'meta', 'settings'));
+    return snap.exists();
+  },
+  connect(fid) {
+    this.ready = new Promise(r => (this._resolve = r));
+    Store.status = 'connecting'; Store.error = ''; render();
+    return this.init().then(() => {
+      this.unsubs.forEach(u => u()); this.unsubs = [];
+      const loaded = new Set();
+      COLS.forEach(c => this.unsubs.push(this.fs.onSnapshot(this.fs.collection(this.db, 'families', fid, c), snap => {
+        const o = {}; snap.forEach(d => { o[d.id] = d.data(); });
+        Store.data[c] = o; loaded.add(c);
+        if (loaded.size === COLS.length) { Store.status = 'ok'; this._resolve(); }
+        Store.emit();
+      }, err => { Store.status = 'error'; Store.error = err.message; render(); })));
+    }).catch(err => { Store.status = 'error'; Store.error = err.message || String(err); render(); });
+  },
+  async write(ops) {
+    try {
+      await this.ready;
+      for (let i = 0; i < ops.length; i += 400) {
+        const b = this.fs.writeBatch(this.db);
+        ops.slice(i, i + 400).forEach(o => o.type === 'set'
+          ? b.set(this.ref(Store.family, o.c, o.d.id), o.d)
+          : b.delete(this.ref(Store.family, o.c, o.id)));
+        b.commit().catch(e => { Store.status = 'error'; Store.error = e.message; render(); });
+      }
+    } catch (e) { Store.status = 'error'; Store.error = e.message; render(); }
+  },
+  disconnect() { this.unsubs.forEach(u => u()); this.unsubs = []; }
+};
+
+const CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const newCode = () => { const a = new Uint32Array(12); crypto.getRandomValues(a); return [...a].map(n => CODE_CHARS[n % CODE_CHARS.length]).join(''); };
+const fmtCode = c => c.replace(/(.{4})(?=.)/g, '$1-');
+const normCode = s => s.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+async function createFamily() {
+  const code = newCode();
+  try {
+    Store.status = 'connecting'; render();
+    await Cloud.init();
+    const snapshot = Store.data;
+    Store.family = code; lsSet(FAM_KEY, code);
+    const ops = [];
+    COLS.forEach(c => Object.values(snapshot[c]).forEach(d => ops.push({ type: 'set', c, d })));
+    ops.push({ type: 'set', c: 'meta', d: { ...(snapshot.meta.settings || {}), id: 'settings', created: Date.now() } });
+    Cloud.ready = Promise.resolve();
+    await Cloud.write(ops);   // envia os dados atuais antes de começar a escutar
+    Cloud.connect(code);
+    toast('Família criada');
+  } catch (e) {
+    Store.family = null; lsSet(FAM_KEY, null); Store.status = 'error'; Store.error = e.message || String(e); render();
+  }
+}
+async function joinFamily(raw) {
+  const code = normCode(raw);
+  if (code.length !== 12) return alert('O código tem 12 letras e números (ex.: ABCD-EFGH-JK23).');
+  try {
+    Store.status = 'connecting'; render();
+    if (!(await Cloud.exists(code))) { Store.status = 'local'; render(); return alert('Código não encontrado. Confira e tente de novo.'); }
+    if (!confirm('Os dados deste aparelho serão substituídos pelos da família. Continuar?')) { Store.status = 'local'; render(); return; }
+    lsSet(LOCAL_KEY, Store.data);
+    Store.family = code; lsSet(FAM_KEY, code);
+    Store.data = empty();
+    Cloud.connect(code);
+    toast('Você entrou na família');
+  } catch (e) { Store.status = 'error'; Store.error = e.message || String(e); render(); }
+}
+function leaveFamily() {
+  if (!confirm('Sair da família? Este aparelho fica com uma cópia dos dados atuais e para de sincronizar.')) return;
+  Cloud.disconnect();
+  lsSet(LOCAL_KEY, Store.data);
+  Store.family = null; lsSet(FAM_KEY, null); Store.status = 'local';
+  Store.emit();
+}
+
+/* =========================================================
+   Sheet genérico
+   ========================================================= */
+const Sheet = {
+  onClick: null,
+  open(html, onClick) { $('sheet').innerHTML = html; this.onClick = onClick; $('scrim').classList.add('open'); },
+  close() { $('scrim').classList.remove('open'); this.onClick = null; }
+};
 $('scrim').addEventListener('click', e => {
-  if (e.target === $('scrim')) return closeSheet();
-  const pick = e.target.closest('[data-pick]'), ren = e.target.closest('[data-ren]'), rm = e.target.closest('[data-rm]');
-  if (pick) { state.current = pick.dataset.pick; editing = false; save(); render(); closeSheet(); }
-  if (ren) {
-    const l = state.lists.find(x => x.id === ren.dataset.ren);
-    const n = prompt('Nome da lista', l.name);
-    if (n && n.trim()) { l.name = n.trim(); save(); render(); renderLists(); }
-  }
-  if (rm) {
-    if (state.lists.length === 1) return alert('Mantenha pelo menos uma lista.');
-    const l = state.lists.find(x => x.id === rm.dataset.rm);
-    if (!confirm('Apagar a lista "' + l.name + '"?')) return;
-    state.lists = state.lists.filter(x => x.id !== l.id);
-    if (state.current === l.id) state.current = state.lists[0].id;
-    save(); render(); renderLists();
-  }
+  if (e.target === $('scrim')) return Sheet.close();
+  Sheet.onClick && Sheet.onClick(e);
 });
-$('newList').onclick = () => {
-  const n = prompt('Nome da nova lista (ex.: Passeio, Médico)');
-  if (!n || !n.trim()) return;
-  const copy = confirm('Começar com os itens da lista atual?');
-  const l = { id: uid(), name: n.trim(), items: copy ? mk(cur().items.map(i => i.name)) : [] };
-  state.lists.push(l); state.current = l.id; editing = !copy;
-  save(); render(); closeSheet();
-};
 
-render();
+/* =========================================================
+   Módulo 1 — Malinha
+   ========================================================= */
+const Mala = (() => {
+  let editing = false;
+  const lists = () => Store.all('lists').sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const cur = () => {
+    const ls = lists(), id = lsGet('cuidados:curList', null);
+    return ls.find(l => l.id === id) || ls[0];
+  };
+  const items = l => Store.all('items').filter(i => i.listId === l.id).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+  function render() {
+    const l = cur();
+    if (!l) {
+      $('malaTitle').textContent = 'Malinha';
+      $('bag').hidden = true; $('malaDock').hidden = true; $('malaAdd').hidden = true; $('malaEdit').hidden = true;
+      $('malaList').innerHTML = `<li class="empty">${Store.status === 'connecting' ? 'Sincronizando…' : 'Nenhuma lista. Toque no título para criar uma.'}</li>`;
+      return;
+    }
+    $('bag').hidden = false; $('malaEdit').hidden = false;
+    const its = items(l), total = its.length, done = its.filter(i => i.done).length, full = total > 0 && done === total;
+    $('malaTitle').textContent = l.name;
+    $('bagNum').textContent = total ? `${done}/${total}` : '0';
+    $('bagLbl').textContent = !total ? 'lista vazia' : full ? 'mala prontinha!' : 'conferidos';
+    $('bag').classList.toggle('full', full);
+    $('bagFill').style.width = total ? (done / total * 100) + '%' : '0';
+    const left = its.filter(i => !i.done).map(i => i.name);
+    $('bagMissing').textContent = !full && done > 0 && left.length <= 3 ? 'Falta: ' + left.join(', ') : '';
+    $('malaReset').disabled = done === 0;
+    $('malaDock').hidden = editing;
+    $('malaEdit').textContent = editing ? 'Pronto' : 'Editar';
+    $('malaAdd').hidden = !editing;
+    if (editing && document.activeElement?.closest?.('#malaList')) return; // não interromper digitação
+    $('malaList').innerHTML = !total && !editing
+      ? '<li class="empty">Lista vazia. Toque em Editar para adicionar itens.</li>'
+      : its.map(i => editing
+        ? `<li class="erow"><input data-id="${i.id}" value="${esc(i.name)}" aria-label="Nome do item"><button class="ibtn d" data-del="${i.id}" aria-label="Remover ${esc(i.name)}">${ICON.trash}</button></li>`
+        : `<li><button class="row${i.done ? ' done' : ''}" data-id="${i.id}" aria-pressed="${i.done}">${ICON.heart}<span class="name">${esc(i.name)}</span></button></li>`
+      ).join('');
+  }
+
+  $('malaList').addEventListener('click', e => {
+    const del = e.target.closest('[data-del]'), b = e.target.closest('.row');
+    if (del) Store.del('items', del.dataset.del);
+    else if (b) { const it = Store.get('items', b.dataset.id); Store.put('items', { ...it, done: !it.done }); }
+  });
+  $('malaList').addEventListener('change', e => {
+    if (!e.target.matches('input[data-id]')) return;
+    const it = Store.get('items', e.target.dataset.id), v = e.target.value.trim();
+    if (it && v && v !== it.name) Store.put('items', { ...it, name: v }); else if (it) e.target.value = it.name;
+  });
+  const addItem = () => {
+    const v = $('malaNew').value.trim(), l = cur(); if (!v || !l) return;
+    const max = Math.max(-1, ...items(l).map(i => i.order ?? 0));
+    $('malaNew').value = '';
+    Store.put('items', { id: uid(), listId: l.id, name: v, done: false, order: max + 1 });
+    $('malaNew').focus();
+  };
+  $('malaAddBtn').onclick = addItem;
+  $('malaNew').addEventListener('keydown', e => e.key === 'Enter' && addItem());
+  $('malaEdit').onclick = () => { document.activeElement?.blur(); editing = !editing; render(); };
+  $('malaReset').onclick = () => {
+    const l = cur(); if (!confirm(`Desmarcar todos os itens de "${l.name}"?`)) return;
+    Store.putMany('items', items(l).filter(i => i.done).map(i => ({ ...i, done: false })));
+  };
+
+  function listsHtml() {
+    const c = cur();
+    return '<h2>Listas</h2>' + lists().map(l => {
+      const its = items(l), d = its.filter(i => i.done).length;
+      return `<div class="lrow">
+        <button class="pick${c && l.id === c.id ? ' cur' : ''}" data-pick="${l.id}"><span>${esc(l.name)}</span><span style="color:var(--muted);font-size:15px">${d}/${its.length}</span></button>
+        <button class="ibtn" data-ren="${l.id}" aria-label="Renomear ${esc(l.name)}">${ICON.pen}</button>
+        <button class="ibtn d" data-rm="${l.id}" aria-label="Apagar ${esc(l.name)}">${ICON.trash}</button></div>`;
+    }).join('') + '<button class="new" data-newlist>+ Nova lista</button>';
+  }
+  function onLists(e) {
+    const t = a => e.target.closest(`[data-${a}]`);
+    if (t('pick')) { lsSet('cuidados:curList', t('pick').dataset.pick); editing = false; render(); Sheet.close(); }
+    else if (t('ren')) {
+      const l = Store.get('lists', t('ren').dataset.ren), n = prompt('Nome da lista', l.name);
+      if (n && n.trim()) { Store.put('lists', { ...l, name: n.trim() }); $('sheet').innerHTML = listsHtml(); }
+    } else if (t('rm')) {
+      if (lists().length === 1) return alert('Mantenha pelo menos uma lista.');
+      const l = Store.get('lists', t('rm').dataset.rm);
+      if (!confirm(`Apagar a lista "${l.name}"?`)) return;
+      Store.delMany([['lists', l.id], ...items(l).map(i => ['items', i.id])]);
+      $('sheet').innerHTML = listsHtml();
+    } else if (t('newlist')) {
+      const n = prompt('Nome da nova lista (ex.: Passeio rápido, Consulta médica)');
+      if (!n || !n.trim()) return;
+      const base = cur(), copy = base && confirm('Começar com os itens da lista atual?');
+      const l = { id: uid(), name: n.trim(), order: Math.max(-1, ...lists().map(x => x.order ?? 0)) + 1 };
+      Store.put('lists', l);
+      if (copy) Store.putMany('items', items(base).map((i, k) => ({ id: uid() + k, listId: l.id, name: i.name, done: false, order: k })));
+      lsSet('cuidados:curList', l.id); editing = !copy; render(); Sheet.close();
+    }
+  }
+  $('openLists').onclick = () => Sheet.open(listsHtml(), onLists);
+  return { render };
+})();
+
+/* =========================================================
+   Módulo 2 — Farmacinha
+   ========================================================= */
+const Farm = (() => {
+  const meds = () => Store.all('meds').sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const doses = m => Store.all('doses').filter(d => d.medId === m.id).sort((a, b) => b.ts - a.ts);
+  const todayCount = m => { const k = dayKey(new Date()); return doses(m).filter(d => dayKey(new Date(d.ts)) === k).length; };
+  const interval = m => 24 / Math.max(1, m.perDay) * 3600000;
+
+  function status(m) {
+    const ds = doses(m), lt = ds[0]?.ts, n = todayCount(m);
+    if (n >= m.perDay) return { cls: 'complete', note: 'Meta de hoje completa ♡' };
+    if (lt && Date.now() - lt < interval(m) * 0.75)
+      return { cls: 'early', note: `Intervalo previsto: próxima a partir de ${hhmm(new Date(lt + interval(m)))}` };
+    const left = m.perDay - n;
+    return { cls: '', note: `Falta${left > 1 ? 'm' : ''} ${left} dose${left > 1 ? 's' : ''} hoje` };
+  }
+
+  function render() {
+    const box = $('medList');
+    const openIds = [...box.querySelectorAll('details[open]')].map(d => d.dataset.med);
+    let pending = 0;
+    const ms = meds();
+    box.innerHTML = !ms.length
+      ? `<p class="empty">${Store.status === 'connecting' ? 'Sincronizando…' : 'Nenhum remédio cadastrado. Toque em + Remédio para começar.'}</p>`
+      : ms.map(m => {
+        const st = status(m), n = todayCount(m), ds = doses(m), lt = ds[0]?.ts;
+        if (st.cls !== 'complete') pending++;
+        const pips = Array.from({ length: m.perDay }, (_, i) => ICON.pip(i < n)).join('');
+        return `<article class="card med ${st.cls}">
+          <div class="mhead">
+            <div><p class="mname">${esc(m.name)}</p>
+              <span class="drops">${m.drops} gota${m.drops > 1 ? 's' : ''}</span>
+              <p class="mdesc">${m.perDay}x ao dia${m.times ? ' · ' + esc(m.times) : ''}</p></div>
+            <button class="sbtn" data-edit="${m.id}" aria-label="Editar ${esc(m.name)}">${ICON.pen}</button>
+          </div>
+          <div class="mstat">
+            <div class="since">${lt ? ago(Date.now() - lt) : 'Sem registro'}<small>${lt ? 'última dose · ' + when(lt) : 'nenhuma dose registrada'}</small></div>
+            <div class="today"><span class="pips">${pips}</span>${n}/${m.perDay}</div>
+          </div>
+          <p class="note">${st.note}</p>
+          <button class="dose" data-dose="${m.id}">Registrar dose</button>
+          ${ds.length ? `<details class="hist" data-med="${m.id}"${openIds.includes(m.id) ? ' open' : ''}><summary>Histórico</summary><ul>${ds.slice(0, 15).map(d =>
+            `<li><span>${when(d.ts)}</span><button data-undo="${d.id}">Remover</button></li>`).join('')}</ul></details>` : ''}
+        </article>`;
+      }).join('');
+    const b = $('farmBadge'); b.hidden = !pending; b.textContent = pending;
+  }
+
+  $('medList').addEventListener('click', e => {
+    const t = a => e.target.closest(`[data-${a}]`);
+    if (t('dose')) {
+      const m = Store.get('meds', t('dose').dataset.dose), st = status(m), lt = doses(m)[0]?.ts;
+      if (st.cls === 'complete' && !confirm(`A meta de hoje de ${m.name} já foi atingida (${m.perDay}x). Registrar outra dose mesmo assim?`)) return;
+      if (st.cls === 'early' && !confirm(`A última dose de ${m.name} foi ${ago(Date.now() - lt)}. Registrar mesmo assim?`)) return;
+      Store.put('doses', { id: uid(), medId: m.id, ts: Date.now() });
+      toast('Dose registrada');
+    } else if (t('undo')) {
+      const d = Store.get('doses', t('undo').dataset.undo);
+      if (d && confirm(`Remover o registro de ${when(d.ts)}?`)) Store.del('doses', d.id);
+    } else if (t('edit')) form(Store.get('meds', t('edit').dataset.edit));
+  });
+
+  function form(m) {
+    const isNew = !m;
+    m = m || { name: '', drops: '', perDay: 1, times: '' };
+    Sheet.open(`<h2>${isNew ? 'Novo remédio' : 'Editar remédio'}</h2>
+      <label class="field"><span>Nome</span><input id="fName" value="${esc(m.name)}" placeholder="Ex.: Vitamina D" autocomplete="off"></label>
+      <div class="two">
+        <label class="field"><span>Gotas por dose</span><input id="fDrops" type="number" inputmode="numeric" min="1" value="${esc(m.drops)}"></label>
+        <label class="field"><span>Doses por dia</span><input id="fPer" type="number" inputmode="numeric" min="1" max="12" value="${esc(m.perDay)}"></label>
+      </div>
+      <label class="field"><span>Horários previstos (opcional)</span><input id="fTimes" value="${esc(m.times)}" placeholder="Ex.: 08:00, 20:00" autocomplete="off"></label>
+      <div class="actions">
+        ${isNew ? '<button class="ghost" data-cancel>Cancelar</button>' : '<button class="ghost d" data-remove>Apagar</button>'}
+        <button class="big" data-save style="--acc:var(--lilac)">Salvar</button>
+      </div>`, e => {
+      if (e.target.closest('[data-cancel]')) return Sheet.close();
+      if (e.target.closest('[data-remove]')) {
+        if (!confirm(`Apagar ${m.name} e todo o histórico?`)) return;
+        Store.delMany([['meds', m.id], ...doses(m).map(d => ['doses', d.id])]);
+        return Sheet.close();
+      }
+      if (e.target.closest('[data-save]')) {
+        const name = $('fName').value.trim(), drops = parseInt($('fDrops').value, 10), per = parseInt($('fPer').value, 10);
+        if (!name) return alert('Informe o nome do remédio.');
+        if (!(drops > 0)) return alert('Informe a quantidade de gotas.');
+        if (!(per > 0 && per <= 12)) return alert('Doses por dia: de 1 a 12.');
+        const data = { name, drops, perDay: per, times: $('fTimes').value.trim() };
+        Store.put('meds', isNew
+          ? { id: uid(), order: Math.max(-1, ...meds().map(x => x.order ?? 0)) + 1, ...data }
+          : { ...m, ...data });
+        Sheet.close();
+      }
+    });
+    if (isNew) setTimeout(() => $('fName').focus(), 250);
+  }
+  $('medAdd').onclick = () => form(null);
+  return { render };
+})();
+
+/* =========================================================
+   Módulo 3 — Pendências
+   ========================================================= */
+const Tasks = (() => {
+  let filter = 'todo';
+  function render() {
+    const all = Store.all('tasks').sort((a, b) => b.created - a.created);
+    const todo = all.filter(t => !t.done), done = all.filter(t => t.done);
+    $('fTodo').textContent = `A fazer (${todo.length})`;
+    $('fDone').textContent = `Concluídas (${done.length})`;
+    $('fTodo').setAttribute('aria-selected', filter === 'todo');
+    $('fDone').setAttribute('aria-selected', filter === 'done');
+    const b = $('taskBadge'); b.hidden = !todo.length; b.textContent = todo.length;
+    const list = filter === 'todo' ? todo : done;
+    $('taskList').innerHTML = list.length ? list.map(t => `
+      <li class="task${t.done ? ' done' : ''}">
+        <button class="row${t.done ? ' done' : ''}" data-tog="${t.id}" aria-pressed="${t.done}">${ICON.heart}<span class="name">${esc(t.text)}</span></button>
+        <button class="sbtn" data-ed="${t.id}" aria-label="Editar">${ICON.pen}</button>
+        <button class="sbtn d" data-rm="${t.id}" aria-label="Excluir">${ICON.trash}</button>
+      </li>`).join('')
+      : `<li class="empty">${filter === 'todo' ? 'Nada pendente por aqui ♡' : 'Nenhuma pendência concluída ainda.'}</li>`;
+  }
+  const add = () => {
+    const v = $('taskNew').value.trim(); if (!v) return;
+    $('taskNew').value = ''; filter = 'todo';
+    Store.put('tasks', { id: uid(), text: v, done: false, created: Date.now() });
+  };
+  $('taskAddBtn').onclick = add;
+  $('taskNew').addEventListener('keydown', e => e.key === 'Enter' && add());
+  $('fTodo').onclick = () => { filter = 'todo'; render(); };
+  $('fDone').onclick = () => { filter = 'done'; render(); };
+  $('taskList').addEventListener('click', e => {
+    const t = a => e.target.closest(`[data-${a}]`);
+    if (t('tog')) { const it = Store.get('tasks', t('tog').dataset.tog); Store.put('tasks', { ...it, done: !it.done }); }
+    else if (t('ed')) {
+      const it = Store.get('tasks', t('ed').dataset.ed), v = prompt('Editar pendência', it.text);
+      if (v && v.trim()) Store.put('tasks', { ...it, text: v.trim() });
+    } else if (t('rm')) {
+      const it = Store.get('tasks', t('rm').dataset.rm);
+      if (confirm(`Excluir "${it.text}"?`)) Store.del('tasks', it.id);
+    }
+  });
+  return { render };
+})();
+
+/* =========================================================
+   Módulo 4 — Família (nome do bebê + compartilhamento)
+   ========================================================= */
+const Fam = (() => {
+  const settings = () => Store.get('meta', 'settings') || { id: 'settings' };
+  function render() {
+    const name = (settings().babyName || '').trim();
+    document.querySelectorAll('[data-hello]').forEach(el => { el.textContent = name ? `Cuidados da ${name} ♡` : 'Cuidados do bebê ♡'; });
+    if (document.activeElement !== $('babyName')) $('babyName').value = name;
+    $('syncDot').hidden = !(Store.family && Store.status === 'ok');
+
+    const st = Store.status;
+    const stHtml = st === 'ok' ? '<div class="status ok"><i></i>Sincronizado</div>'
+      : st === 'connecting' ? '<div class="status"><i></i>Conectando…</div>'
+      : st === 'error' ? `<div class="status err"><i></i>Erro: ${esc(Store.error)}</div>` : '';
+    let html;
+    if (!Cloud.configured()) {
+      html = `<section class="card fcard"><h2>Compartilhar com a família</h2>
+        <p>A sincronização ainda não foi configurada. Siga o guia do Firebase (gratuito) e cole a configuração no arquivo <b>config.js</b>. Até lá, tudo fica salvo só neste aparelho.</p></section>`;
+    } else if (Store.family) {
+      html = `<section class="card fcard"><h2>Família conectada</h2>
+        <p>Envie este código para quem vai usar o app junto com você. A pessoa digita o código na aba Família do app dela.</p>
+        <div class="code">${fmtCode(Store.family)}</div>${stHtml}
+        <button class="big" data-copy>Copiar código</button>
+        <div style="height:10px"></div>
+        <button class="ghost d" data-leave>Sair da família</button></section>`;
+    } else {
+      html = `<section class="card fcard"><h2>Compartilhar com a família</h2>
+        <p>Crie uma família para que tudo o que um adicionar apareça no celular do outro, em tempo real.</p>${stHtml}
+        <button class="big" data-create ${st === 'connecting' ? 'disabled' : ''}>Criar família</button>
+        <div class="or">ou</div>
+        <label class="field"><span>Já tem um código?</span><input id="joinCode" placeholder="ABCD-EFGH-JK23" autocapitalize="characters" autocomplete="off"></label>
+        <button class="ghost" data-join ${st === 'connecting' ? 'disabled' : ''}>Entrar na família</button></section>`;
+    }
+    const box = $('famBox');
+    const typing = document.activeElement?.tagName === 'INPUT' && box.contains(document.activeElement);
+    if (box.dataset.html !== html && !typing) { box.innerHTML = html; box.dataset.html = html; }
+  }
+  $('famBox').addEventListener('click', e => {
+    const t = a => e.target.closest(`[data-${a}]`);
+    if (t('create')) createFamily();
+    else if (t('join')) joinFamily($('joinCode').value);
+    else if (t('leave')) leaveFamily();
+    else if (t('copy')) {
+      const txt = fmtCode(Store.family);
+      (navigator.clipboard?.writeText(txt) || Promise.reject()).then(() => toast('Código copiado'), () => prompt('Copie o código:', txt));
+    }
+  });
+  $('babyName').addEventListener('change', e => Store.put('meta', { ...settings(), babyName: e.target.value.trim() }));
+  return { render };
+})();
+
+/* =========================================================
+   Navegação e inicialização
+   ========================================================= */
+function render() { Mala.render(); Farm.render(); Tasks.render(); Fam.render(); }
+Store.on(render);
+
+const VIEWS = { mala: 'v-mala', farm: 'v-farm', task: 'v-task', fam: 'v-fam' };
+function go(tab) {
+  Object.entries(VIEWS).forEach(([k, v]) => { $(v).hidden = k !== tab; });
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+  try { sessionStorage.setItem('tab', tab); } catch {}
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.tab));
+
+// carregar dados
+if (Store.family && Cloud.configured()) {
+  Store.data = lsGet(MIRROR_KEY, empty());
+  render();
+  Cloud.connect(Store.family);
+} else {
+  if (Store.family) { Store.family = null; } // família salva mas sem config: volta ao local
+  let d = lsGet(LOCAL_KEY, null);
+  if (!d) { d = migrateLegacy() || seedData(); lsSet(LOCAL_KEY, d); }
+  Store.data = { ...empty(), ...d };
+  render();
+}
+let start = 'mala'; try { start = sessionStorage.getItem('tab') || 'mala'; } catch {}
+go(start);
+
+setInterval(Farm.render, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) Farm.render(); });
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
