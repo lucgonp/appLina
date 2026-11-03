@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mala da Fisio</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mala">
+<meta name="theme-color" content="#EEF3F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141B2E" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{
+  --bg:#EEF3F8; --surface:#FFFFFF; --ink:#1D2A44; --muted:#6B7891;
+  --line:#D8E0EB; --navy:#2B3A67; --ok:#2E9E6B; --ok-soft:#DDF2E8; --danger:#C93C55;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#141B2E; --surface:#1E2740; --ink:#EEF2F9; --muted:#9AA6BF;
+    --line:#2E3A58; --navy:#8FA4E8; --ok:#4CC08A; --ok-soft:#1D3B33; --danger:#F07088;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size:17px; line-height:1.35;
+  padding: env(safe-area-inset-top,0) env(safe-area-inset-right,0) 0 env(safe-area-inset-left,0);
+  -webkit-user-select:none; user-select:none;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit;color:var(--ink)}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;padding:12px 18px calc(110px + env(safe-area-inset-bottom,0))}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0 4px}
+.listbtn{display:flex;align-items:center;gap:6px;font-size:28px;font-weight:700;letter-spacing:-.02em;padding:6px 0;text-align:left}
+.listbtn svg{flex:none;opacity:.6}
+.pill{font-weight:600;color:var(--navy);padding:10px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+
+/* progresso: o elemento marcante */
+.bag{margin:14px 0 18px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px 18px 16px}
+.count{display:flex;align-items:baseline;gap:8px}
+.count b{font-size:44px;line-height:1;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.count span{color:var(--muted);font-weight:600}
+.bar{margin-top:14px;height:14px;border-radius:999px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--navy);border-radius:999px;transition:width .35s ease,background .35s}
+.bag.full .bar i{background:var(--ok)}
+.bag.full{background:var(--ok-soft);border-color:transparent}
+.bag.full .count span{color:var(--ok)}
+.missing{margin:10px 0 0;color:var(--muted);font-size:15px}
+
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:14px;width:100%;min-height:60px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-align:left;font-weight:600}
+.dot{flex:none;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--muted);display:grid;place-items:center;transition:background .15s,border-color .15s}
+.dot svg{opacity:0;transition:opacity .15s}
+.item.done{background:transparent}
+.item.done .dot{background:var(--ok);border-color:var(--ok)}
+.item.done .dot svg{opacity:1}
+.item.done .name{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}
+.item:active{transform:scale(.985)}
+
+/* modo edição */
+.erow{display:flex;align-items:center;gap:8px}
+.erow input{flex:1;min-width:0;min-height:54px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-weight:600;-webkit-user-select:text;user-select:text}
+.del{flex:none;width:54px;height:54px;border-radius:14px;color:var(--danger);display:grid;place-items:center;border:1px solid var(--line);background:var(--surface)}
+.add{display:flex;gap:8px;margin-top:14px}
+.add input{flex:1;min-width:0;min-height:56px;padding:0 16px;border-radius:16px;border:1.5px dashed var(--muted);background:transparent;-webkit-user-select:text;user-select:text}
+.add button{min-width:56px;border-radius:16px;background:var(--navy);color:var(--bg);font-size:28px;font-weight:700}
+.empty{padding:28px 8px;text-align:center;color:var(--muted)}
+
+footer{position:fixed;left:0;right:0;bottom:0;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0));background:linear-gradient(transparent,var(--bg) 30%)}
+footer .in{max-width:560px;margin:0 auto}
+.reset{width:100%;min-height:58px;border-radius:18px;background:var(--navy);color:var(--bg);font-weight:700;font-size:18px}
+.reset:disabled{opacity:.35}
+
+/* folha de listas */
+.scrim{position:fixed;inset:0;background:rgba(10,15,30,.45);display:none;align-items:flex-end;z-index:10}
+.scrim.open{display:flex}
+.sheet{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0));max-height:80vh;overflow:auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.sheet h2{margin:4px 0 14px;font-size:20px}
+.lrow{display:flex;gap:8px;margin-bottom:8px}
+.lrow .pick{flex:1;text-align:left;min-height:56px;padding:0 16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.lrow .pick.cur{border:2px solid var(--navy)}
+.lrow .sm{width:56px;border-radius:16px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}
+.lrow .sm.d{color:var(--danger)}
+.new{width:100%;min-height:56px;margin-top:6px;border-radius:16px;border:1.5px dashed var(--muted);font-weight:600;color:var(--navy)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <button class="listbtn" id="openLists" aria-label="Trocar lista">
+      <span id="title"></span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <button class="pill" id="editBtn">Editar</button>
+  </header>
+
+  <section class="bag" id="bag" aria-live="polite">
+    <div class="count"><b id="num">0</b><span id="lbl"></span></div>
+    <div class="bar"><i id="fill"></i></div>
+    <p class="missing" id="missing"></p>
+  </section>
+
+  <ul id="list"></ul>
+  <div class="add" id="addBox" hidden>
+    <input id="newItem" placeholder="Novo item" enterkeyhint="done" autocomplete="off">
+    <button id="addBtn" aria-label="Adicionar item">+</button>
+  </div>
+</div>
+
+<footer><div class="in"><button class="reset" id="resetBtn">Esvaziar mala</button></div></footer>
+
+<div class="scrim" id="scrim">
+  <div class="sheet" role="dialog" aria-label="Listas">
+    <h2>Listas</h2>
+    <div id="lists"></div>
+    <button class="new" id="newList">+ Nova lista</button>
+  </div>
+</div>
+
+<script>
+const KEY = 'mala:v1';
+const uid = () => Math.random().toString(36).slice(2, 9);
+const mk = names => names.map(n => ({ id: uid(), name: n, done: false }));
+const seed = () => {
+  const id = uid();
+  return {
+    current: id,
+    lists: [{ id, name: 'Fisioterapia', items: mk([
+      'Fraldas', 'Lenços umedecidos', 'Pomada', 'Trocador portátil',
+      'Mamadeira', 'Leite / fórmula', 'Água', 'Troca de roupa completa',
+      'Paninho de boca', 'Brinquedo favorito', 'Carteirinha do plano', 'Saquinho para roupa suja'
+    ]) }]
+  };
+};
+
+let state;
+try { state = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { state = seed(); }
+let editing = false;
+
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+const cur = () => state.lists.find(l => l.id === state.current) || state.lists[0];
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+const trash = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
+const pen = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
+
+function render() {
+  const l = cur();
+  state.current = l.id;
+  $('title').textContent = l.name;
+  const total = l.items.length, done = l.items.filter(i => i.done).length;
+  $('num').textContent = total ? `${done}/${total}` : '0';
+  const full = total > 0 && done === total;
+  $('lbl').textContent = !total ? 'lista vazia' : full ? 'mala pronta' : 'na mala';
+  $('bag').classList.toggle('full', full);
+  $('fill').style.width = total ? (done / total * 100) + '%' : '0';
+  const left = l.items.filter(i => !i.done).map(i => i.name);
+  $('missing').textContent = !full && done > 0 && left.length <= 3 ? 'Falta: ' + left.join(', ') : '';
+  $('resetBtn').disabled = done === 0 || editing;
+  $('editBtn').textContent = editing ? 'Pronto' : 'Editar';
+  $('addBox').hidden = !editing;
+
+  const ul = $('list');
+  if (!total && !editing) {
+    ul.innerHTML = '<li class="empty">Nenhum item ainda. Toque em Editar para adicionar.</li>';
+    return;
+  }
+  ul.innerHTML = l.items.map(i => editing
+    ? `<li class="erow"><input data-id="${i.id}" value="${esc(i.name)}" aria-label="Nome do item"><button class="del" data-del="${i.id}" aria-label="Remover ${esc(i.name)}">${trash}</button></li>`
+    : `<li><button class="item${i.done ? ' done' : ''}" data-id="${i.id}" aria-pressed="${i.done}"><span class="dot">${check}</span><span class="name">${esc(i.name)}</span></button></li>`
+  ).join('');
+}
+
+$('list').addEventListener('click', e => {
+  const l = cur();
+  const del = e.target.closest('[data-del]');
+  if (del) {
+    l.items = l.items.filter(i => i.id !== del.dataset.del);
+    save(); render(); return;
+  }
+  const b = e.target.closest('.item');
+  if (b) {
+    const it = l.items.find(i => i.id === b.dataset.id);
+    it.done = !it.done; save(); render();
+  }
+});
+
+$('list').addEventListener('change', e => {
+  if (e.target.matches('input[data-id]')) {
+    const it = cur().items.find(i => i.id === e.target.dataset.id);
+    const v = e.target.value.trim();
+    if (v) it.name = v; else e.target.value = it.name;
+    save();
+  }
+});
+
+function addItem() {
+  const v = $('newItem').value.trim();
+  if (!v) return;
+  cur().items.push({ id: uid(), name: v, done: false });
+  $('newItem').value = '';
+  save(); render(); $('newItem').focus();
+}
+$('addBtn').onclick = addItem;
+$('newItem').addEventListener('keydown', e => { if (e.key === 'Enter') addItem(); });
+
+$('editBtn').onclick = () => {
+  if (editing) document.activeElement?.blur();
+  editing = !editing; render();
+};
+
+$('resetBtn').onclick = () => {
+  if (!confirm('Desmarcar todos os itens de "' + cur().name + '"?')) return;
+  cur().items.forEach(i => i.done = false);
+  save(); render();
+};
+
+/* listas */
+function renderLists() {
+  $('lists').innerHTML = state.lists.map(l => {
+    const d = l.items.filter(i => i.done).length;
+    return `<div class="lrow">
+      <button class="pick${l.id === state.current ? ' cur' : ''}" data-pick="${l.id}"><span>${esc(l.name)}</span><span style="color:var(--muted);font-size:15px">${d}/${l.items.length}</span></button>
+      <button class="sm" data-ren="${l.id}" aria-label="Renomear ${esc(l.name)}">${pen}</button>
+      <button class="sm d" data-rm="${l.id}" aria-label="Apagar ${esc(l.name)}">${trash}</button>
+    </div>`;
+  }).join('');
+}
+const openSheet = () => { renderLists(); $('scrim').classList.add('open'); };
+const closeSheet = () => $('scrim').classList.remove('open');
+$('openLists').onclick = openSheet;
+$('scrim').addEventListener('click', e => {
+  if (e.target === $('scrim')) return closeSheet();
+  const pick = e.target.closest('[data-pick]'), ren = e.target.closest('[data-ren]'), rm = e.target.closest('[data-rm]');
+  if (pick) { state.current = pick.dataset.pick; editing = false; save(); render(); closeSheet(); }
+  if (ren) {
+    const l = state.lists.find(x => x.id === ren.dataset.ren);
+    const n = prompt('Nome da lista', l.name);
+    if (n && n.trim()) { l.name = n.trim(); save(); render(); renderLists(); }
+  }
+  if (rm) {
+    if (state.lists.length === 1) return alert('Mantenha pelo menos uma lista.');
+    const l = state.lists.find(x => x.id === rm.dataset.rm);
+    if (!confirm('Apagar a lista "' + l.name + '"?')) return;
+    state.lists = state.lists.filter(x => x.id !== l.id);
+    if (state.current === l.id) state.current = state.lists[0].id;
+    save(); render(); renderLists();
+  }
+});
+$('newList').onclick = () => {
+  const n = prompt('Nome da nova lista (ex.: Passeio, Médico)');
+  if (!n || !n.trim()) return;
+  const copy = confirm('Começar com os itens da lista atual?');
+  const l = { id: uid(), name: n.trim(), items: copy ? mk(cur().items.map(i => i.name)) : [] };
+  state.lists.push(l); state.current = l.id; editing = !copy;
+  save(); render(); closeSheet();
+};
+
+render();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
