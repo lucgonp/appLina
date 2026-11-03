@@ -77,8 +77,8 @@ input{font:inherit;color:var(--ink);-webkit-user-select:text;user-select:text}
 .quick button{padding:8px 14px;border-radius:999px;background:var(--surface);box-shadow:0 2px 0 var(--line);font-weight:700;font-size:15px}
 .field select{width:100%;min-height:56px;padding:0 14px;border-radius:18px;border:2px solid var(--line);background:var(--surface);font:inherit;font-weight:700;color:var(--ink);-webkit-appearance:none;appearance:none}
 .field input[type=date],.field input[type=time]{-webkit-appearance:none;appearance:none;display:flex;align-items:center}
-.who{display:flex;gap:8px;margin-top:10px}
-.who button{flex:1;min-height:48px;border-radius:16px;background:var(--rose-soft);color:var(--rose);font-weight:800}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.who button{min-height:48px;border-radius:16px;background:var(--rose-soft);color:var(--rose);font-weight:800}
 .who button[aria-pressed="true"]{background:var(--rose);color:var(--on-acc)}
 
 header{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:8px 0 6px;min-height:64px}
@@ -283,9 +283,9 @@ nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-
   </section>
   <section class="card fcard">
     <label class="field" style="margin:0"><span>Quem usa este celular</span>
-      <input id="meName" placeholder="Ex.: Mamãe" autocomplete="off" maxlength="20"></label>
-    <div class="who" id="whoBtns"><button data-who="Mamãe">Mamãe</button><button data-who="Papai">Papai</button></div>
-    <p style="margin:10px 0 0">Aparece no histórico de doses, na mala e nas pendências.</p>
+      <input id="meName" placeholder="Ex.: Vovó Maria" autocomplete="off" maxlength="20"></label>
+    <div class="who" id="whoBtns"><button data-who="Mamãe">Mamãe</button><button data-who="Papai">Papai</button><button data-who="Vovó">Vovó</button><button data-who="Vovô">Vovô</button></div>
+    <p style="margin:10px 0 0">Aparece no histórico de doses, na mala e nas pendências. Como são dois avôs e duas avós, vale escrever o nome, como "Vovó Maria".</p>
   </section>
   <div id="famBox"></div>
   <section class="card fcard">
@@ -1003,7 +1003,7 @@ const Fam = (() => {
     if (document.activeElement !== $('babyName')) $('babyName').value = name;
     $('syncDot').hidden = !(Store.family && Store.status === 'ok');
     if (document.activeElement !== $('meName')) $('meName').value = me();
-    document.querySelectorAll('#whoBtns button').forEach(b => b.setAttribute('aria-pressed', b.dataset.who === me()));
+    document.querySelectorAll('#whoBtns button').forEach(b => b.setAttribute('aria-pressed', me() === b.dataset.who || (b.dataset.who.startsWith('Vov') && me().startsWith(b.dataset.who + ' '))));
 
     const st = Store.status;
     const stHtml = st === 'ok' ? '<div class="status ok"><i></i>Sincronizado</div>'
@@ -1045,7 +1045,12 @@ const Fam = (() => {
   $('babyName').addEventListener('change', e => Store.put('meta', { ...settings(), babyName: e.target.value.trim() }));
   const setMe = v => { lsSet('cuidados:me', v.trim()); render(); };
   $('meName').addEventListener('change', e => setMe(e.target.value));
-  $('whoBtns').addEventListener('click', e => { const b = e.target.closest('[data-who]'); if (b) { setMe(b.dataset.who); toast(`Este celular é de: ${b.dataset.who}`); } });
+  $('whoBtns').addEventListener('click', e => {
+    const b = e.target.closest('[data-who]'); if (!b) return;
+    const v = b.dataset.who;
+    if (v.startsWith('Vov')) { const i = $('meName'); i.value = v + ' '; i.focus(); i.setSelectionRange(i.value.length, i.value.length); return; }
+    setMe(v); toast(`Este celular é de: ${v}`);
+  });
 
   $('bkExport').onclick = () => {
     const payload = { app: 'cuidados', version: 4, exported: new Date().toISOString(), data: Store.data };
@@ -1103,12 +1108,24 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) rend
 if (!me() && !lsGet('cuidados:askedMe', false)) {
   lsSet('cuidados:askedMe', true);
   setTimeout(() => Sheet.open(`<h2>Quem usa este celular?</h2>
-    <p style="margin:-6px 0 14px;color:var(--muted);font-weight:600">Assim o app mostra quem deu cada dose e quem conferiu a mala. Dá para mudar depois na aba Família.</p>
-    <div class="who" style="margin:0 0 12px"><button data-pickme="Mamãe">Mamãe</button><button data-pickme="Papai">Papai</button></div>
-    <button class="ghost" data-pickme="">Agora não</button>`, e => {
-    const b = e.target.closest('[data-pickme]'); if (!b) return;
-    if (b.dataset.pickme) lsSet('cuidados:me', b.dataset.pickme);
-    Sheet.close(); render();
+    <p style="margin:-6px 0 14px;color:var(--muted);font-weight:600">Assim todo mundo vê quem deu cada dose e quem conferiu a mala. Dá para mudar depois na aba Família.</p>
+    <div class="who" style="margin:0 0 12px"><button data-pickme="Mamãe">Mamãe</button><button data-pickme="Papai">Papai</button><button data-pickme="Vovó">Vovó</button><button data-pickme="Vovô">Vovô</button></div>
+    <label class="field"><span>Nome (para diferenciar os avós)</span><input id="pickName" placeholder="Ex.: Vovó Maria" autocomplete="off" maxlength="20"></label>
+    <div class="actions" style="margin-top:0"><button class="ghost" data-skip>Agora não</button><button class="big" data-savename>Salvar</button></div>`, e => {
+    const pick = e.target.closest('[data-pickme]');
+    if (pick) {
+      const v = pick.dataset.pickme, i = $('pickName');
+      if (v.startsWith('Vov')) { i.value = v + ' '; i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+      else i.value = v;
+      return;
+    }
+    if (e.target.closest('[data-skip]')) { Sheet.close(); return; }
+    if (e.target.closest('[data-savename]')) {
+      const v = $('pickName').value.trim();
+      if (!v) return alert('Escolha uma opção ou escreva seu nome.');
+      if (/^vov[óô]$/i.test(v) && !confirm(`Só "${v}"? Como são dois, o ideal é colocar o nome (ex.: ${v} Maria). Salvar assim mesmo?`)) return;
+      lsSet('cuidados:me', v); Sheet.close(); render();
+    }
   }), 400);
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
