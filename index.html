@@ -57,6 +57,61 @@ input{font:inherit;color:var(--ink);-webkit-user-select:text;user-select:text}
 #v-task{--acc:var(--mint);--acc-soft:var(--mint-soft)}
 #v-fam{--acc:var(--rose);--acc-soft:var(--rose-soft)}
 #v-agenda{--acc:var(--sky);--acc-soft:var(--sky-soft)}
+#v-home{--acc:var(--rose);--acc-soft:var(--rose-soft)}
+/* ---------- Papéis na família ---------- */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
+.roles button{min-height:64px;padding:8px 10px;border-radius:18px;background:var(--rose-soft);color:var(--rose);font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center}
+.roles button small{font-size:12px;font-weight:700;opacity:.85}
+.roles button[aria-pressed="true"]{background:var(--rose);color:var(--on-acc)}
+.roles button.full{background:var(--surface);color:var(--muted);box-shadow:0 2px 0 var(--line)}
+.roles .wide{grid-column:1/-1;min-height:52px}
+.me-row{display:flex;align-items:center;gap:12px}
+.me-row .av{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--rose-soft);color:var(--rose)}
+.me-row .nm{flex:1;min-width:0}
+.me-row .nm b{display:block;font-size:19px}
+.me-row .nm small{display:block;color:var(--muted);font-weight:600;font-size:14px}
+.me-row .pill{flex:none}
+.mlist{margin-top:14px;border-top:2px dotted var(--line)}
+.mlist li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:2px dotted var(--line)}
+.mlist .rl{flex:none;min-width:64px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--rose)}
+.mlist .mn{flex:1;min-width:0;font-weight:700}
+.mlist .mn small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.holders{margin:0 0 12px;padding:12px 14px;border-radius:18px;background:var(--sun-soft)}
+.holders p{margin:0 0 8px;font-weight:700;color:var(--sun)}
+.holders button b{white-space:nowrap}
+.holders button{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;margin-top:6px;border-radius:14px;background:var(--surface);font-weight:700}
+.holders button span{color:var(--rose);font-size:14px}
+.famBtn{position:relative;width:40px;height:40px;border-radius:999px;background:var(--surface);box-shadow:0 2px 0 var(--line);display:grid;place-items:center;color:var(--rose)}
+.famBtn .sync{position:absolute;top:2px;right:2px;width:10px;height:10px;border-radius:50%;background:var(--mint);border:2px solid var(--surface)}
+.hsec{margin:18px 0 0}
+.hsec-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 4px 8px}
+.hsec-h b{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:800}
+.hsec-h button{padding:7px 12px;border-radius:999px;background:var(--surface);box-shadow:0 2px 0 var(--line);font-weight:700;font-size:14px;color:var(--acc)}
+.hsec .note-c+.note-c{margin-top:8px}
+.notes-wrap{padding:12px;border-radius:26px;background:var(--sun-soft)}
+.hcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 14px 14px 16px;border-radius:20px;background:var(--surface);box-shadow:0 2px 0 var(--line)}
+.hcard+.hcard{margin-top:8px}
+.hcard .hi{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-items:center}
+.hcard .hb{flex:1;min-width:0}
+.hcard .hb b{display:block;font-size:17px;font-weight:800;overflow-wrap:anywhere}
+.hcard .hb small{display:block;font-size:14px;font-weight:600;color:var(--muted)}
+.hcard>svg{flex:none;color:var(--muted)}
+.tag{flex:none;font-size:13px;font-weight:800;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.tag.ok{background:var(--mint-soft);color:var(--mint)}
+.tag.wait{background:var(--sun-soft);color:var(--sun)}
+.tag.go{background:var(--lilac-soft);color:var(--lilac)}
+/* faixa compacta de avisos na Malinha */
+.nstrip{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin:10px 0 0;padding:12px 14px 12px 16px;border-radius:20px;background:var(--sun-soft);color:var(--ink)}
+.nstrip .ni{flex:none;color:var(--sun);display:grid;place-items:center}
+.nstrip .nt{flex:1;min-width:0}
+.nstrip .nt b{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:800;color:var(--sun)}
+.nstrip .nt span{display:block;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.nstrip .nc{flex:none;min-width:24px;height:24px;padding:0 7px;border-radius:12px;background:var(--sun);color:var(--on-acc);font-size:13px;font-weight:800;display:grid;place-items:center}
+.nstrip .nbadge{flex:none;font-size:11px;font-weight:800;color:var(--on-acc);background:var(--rose);border-radius:999px;padding:2px 7px;text-transform:uppercase;letter-spacing:.04em}
+.nstrip>svg{flex:none;color:var(--sun)}
+.backbtn{display:inline-flex;align-items:center;gap:2px;font-weight:700;color:var(--acc);font-size:16px;margin:0 0 2px -4px}
+#notesList{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+#notesList .note-c{margin:0}
 .txt{display:flex;flex-direction:column;min-width:0;flex:1}
 .by{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none!important;margin-top:1px}
 .banner{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin:10px 0 0;padding:12px 16px;border-radius:20px;background:var(--sky-soft);color:var(--ink);font-weight:700}
@@ -127,6 +182,7 @@ ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10p
 .dock .in{max-width:560px;margin:0 auto}
 .big{width:100%;min-height:60px;border-radius:22px;background:var(--acc,var(--rose));color:var(--on-acc);font-weight:800;font-size:18px;pointer-events:auto;box-shadow:0 6px 18px color-mix(in srgb,var(--acc,var(--rose)) 35%,transparent)}
 .big:disabled{opacity:.4;box-shadow:none}
+.dock .big:disabled{opacity:1;background:color-mix(in srgb,var(--acc,var(--rose)) 35%,var(--bg));color:color-mix(in srgb,var(--on-acc) 70%,transparent)}
 
 /* ---------- Farmacinha ---------- */
 .meds{display:flex;flex-direction:column;gap:14px;margin-top:12px}
@@ -193,6 +249,7 @@ nav.tabs [data-tab=mala]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
 nav.tabs [data-tab=farm]{--tc:var(--lilac);--tc-soft:var(--lilac-soft)}
 nav.tabs [data-tab=task]{--tc:var(--mint);--tc-soft:var(--mint-soft)}
 nav.tabs [data-tab=fam]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
+nav.tabs [data-tab=home]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
 nav.tabs [data-tab=agenda]{--tc:var(--sky);--tc-soft:var(--sky-soft)}
 nav.tabs .ico{position:relative;display:grid;place-items:center}
 nav.tabs .badge{position:absolute;top:-6px;left:16px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--rose);color:#fff;font-size:11px;line-height:18px;text-align:center}
@@ -286,7 +343,18 @@ body:not(.locked) .lockpill{background:var(--sun-soft);color:var(--sun);box-shad
 <body>
 
 <!-- ================= MALINHA ================= -->
-<main class="view" id="v-mala">
+<!-- ================= INÍCIO ================= -->
+<main class="view" id="v-home">
+  <header>
+    <div><span class="hello" data-hello></span><h1 id="homeTitle">Olá!</h1></div>
+    <div class="hbtns"><button class="lockpill" data-lock aria-label="Trava de edição"></button>
+      <button class="famBtn" data-gofam aria-label="Família e configurações"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M164.38,181.1a52,52,0,1,0-72.76,0,75.89,75.89,0,0,0-30,28.89,12,12,0,0,0,20.78,12,53,53,0,0,1,91.22,0,12,12,0,1,0,20.78-12A75.89,75.89,0,0,0,164.38,181.1ZM100,144a28,28,0,1,1,28,28A28,28,0,0,1,100,144Zm147.21,9.59a12,12,0,0,1-16.81-2.39c-8.33-11.09-19.85-19.59-29.33-21.64a12,12,0,0,1-1.82-22.91,20,20,0,1,0-24.78-28.3,12,12,0,1,1-21-11.6,44,44,0,1,1,73.28,48.35,92.18,92.18,0,0,1,22.85,21.69A12,12,0,0,1,247.21,153.59Zm-192.28-24c-9.48,2.05-21,10.55-29.33,21.65A12,12,0,0,1,6.41,136.79,92.37,92.37,0,0,1,29.26,115.1a44,44,0,1,1,73.28-48.35,12,12,0,1,1-21,11.6,20,20,0,1,0-24.78,28.3,12,12,0,0,1-1.82,22.91Z"/></svg><span class="sync" id="syncDot" hidden></span></button></div>
+  </header>
+  <section class="hsec" id="homeNotes"></section>
+  <section class="hsec" id="homeToday"></section>
+</main>
+
+<main class="view" id="v-mala" hidden>
   <header>
     <button class="listbtn" id="openLists" aria-label="Trocar lista">
       <span class="hello" data-hello></span>
@@ -295,7 +363,6 @@ body:not(.locked) .lockpill{background:var(--sun-soft);color:var(--sun);box-shad
     </button>
     <div class="hbtns"><button class="lockpill" data-lock aria-label="Trava de edição"></button><button class="pill eo" id="malaEdit">Editar</button></div>
   </header>
-  <div id="notesBox"></div>
   <div id="malaBanner"></div>
   <section class="bag" id="bag" aria-live="polite">
     <div class="count"><b id="bagNum">0</b><span id="bagLbl"></span></div>
@@ -347,17 +414,12 @@ body:not(.locked) .lockpill{background:var(--sun-soft);color:var(--sun);box-shad
 
 <!-- ================= FAMÍLIA ================= -->
 <main class="view" id="v-fam" hidden>
-  <header><div><span class="hello" data-hello></span><h1>Família</h1></div><div class="hbtns"><button class="lockpill" data-lock aria-label="Trava de edição"></button></div></header>
+  <header><div><button class="backbtn" data-gohome><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg>Início</button><h1>Família</h1></div><div class="hbtns"><button class="lockpill" data-lock aria-label="Trava de edição"></button></div></header>
   <section class="card fcard">
     <label class="field" style="margin:0"><span>Nome do bebê</span>
       <input id="babyName" placeholder="Ex.: Lina" autocomplete="off" maxlength="30"></label>
   </section>
-  <section class="card fcard">
-    <label class="field" style="margin:0"><span>Quem usa este celular</span>
-      <input id="meName" placeholder="Ex.: Vovó Maria" autocomplete="off" maxlength="20"></label>
-    <div class="who" id="whoBtns"><button data-who="Mamãe">Mamãe</button><button data-who="Papai">Papai</button><button data-who="Vovó">Vovó</button><button data-who="Vovô">Vovô</button></div>
-    <p style="margin:10px 0 0">Aparece no histórico de doses, na mala e nas pendências. Como são dois avôs e duas avós, vale escrever o nome, como "Vovó Maria".</p>
-  </section>
+  <section class="card fcard" id="meCard"></section>
   <div id="famBox"></div>
   <section class="card fcard">
     <h2>Backup</h2>
@@ -371,7 +433,11 @@ body:not(.locked) .lockpill{background:var(--sun-soft);color:var(--sun);box-shad
 
 <!-- ================= TAB BAR ================= -->
 <nav class="tabs" role="tablist"><div class="in">
-  <button data-tab="mala" role="tab" aria-selected="true">
+  <button data-tab="home" role="tab" aria-selected="true">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 256 256" fill="currentColor"><path d="M222.14,105.85l-80-80a20,20,0,0,0-28.28,0l-80,80A19.86,19.86,0,0,0,28,120v96a12,12,0,0,0,12,12h64a12,12,0,0,0,12-12V164h24v52a12,12,0,0,0,12,12h64a12,12,0,0,0,12-12V120A19.86,19.86,0,0,0,222.14,105.85ZM204,204H164V152a12,12,0,0,0-12-12H104a12,12,0,0,0-12,12v52H52V121.65l76-76,76,76Z"/></svg></span>
+    Início
+  </button>
+  <button data-tab="mala" role="tab" aria-selected="false">
     <span class="ico"><svg width="26" height="26" viewBox="0 0 256 256" fill="currentColor"><path d="M172,48.55V36A28,28,0,0,0,144,8H112A28,28,0,0,0,84,36V48.55A60.08,60.08,0,0,0,32,108V220a20,20,0,0,0,20,20H204a20,20,0,0,0,20-20V108A60.08,60.08,0,0,0,172,48.55ZM112,32h32a4,4,0,0,1,4,4V48H108V36A4,4,0,0,1,112,32Zm48,128H96v-8a4,4,0,0,1,4-4h56a4,4,0,0,1,4,4ZM96,184h64v32H96Zm104,32H184V152a28,28,0,0,0-28-28H100a28,28,0,0,0-28,28v64H56V108A36,36,0,0,1,92,72h72a36,36,0,0,1,36,36ZM160,100a12,12,0,0,1-12,12H108a12,12,0,0,1,0-24h40A12,12,0,0,1,160,100Z"/></svg></span>
     Malinha
   </button>
@@ -386,10 +452,6 @@ body:not(.locked) .lockpill{background:var(--sun-soft);color:var(--sun);box-shad
   <button data-tab="task" role="tab" aria-selected="false">
     <span class="ico"><svg width="26" height="26" viewBox="0 0 256 256" fill="currentColor"><path d="M243,96a20.33,20.33,0,0,0-17.74-14l-56.59-4.57L146.83,24.62a20.36,20.36,0,0,0-37.66,0L87.35,77.44,30.76,82A20.45,20.45,0,0,0,19.1,117.88l43.18,37.24-13.2,55.7A20.37,20.37,0,0,0,79.57,233L128,203.19,176.43,233a20.39,20.39,0,0,0,30.49-22.15l-13.2-55.7,43.18-37.24A20.43,20.43,0,0,0,243,96ZM172.53,141.7a12,12,0,0,0-3.84,11.86L181.58,208l-47.29-29.08a12,12,0,0,0-12.58,0L74.42,208l12.89-54.4a12,12,0,0,0-3.84-11.86L41.2,105.24l55.4-4.47a12,12,0,0,0,10.13-7.38L128,41.89l21.27,51.5a12,12,0,0,0,10.13,7.38l55.4,4.47Z"/></svg><span class="badge" id="taskBadge" hidden></span></span>
     Pendências
-  </button>
-  <button data-tab="fam" role="tab" aria-selected="false">
-    <span class="ico"><svg width="26" height="26" viewBox="0 0 256 256" fill="currentColor"><path d="M164.38,181.1a52,52,0,1,0-72.76,0,75.89,75.89,0,0,0-30,28.89,12,12,0,0,0,20.78,12,53,53,0,0,1,91.22,0,12,12,0,1,0,20.78-12A75.89,75.89,0,0,0,164.38,181.1ZM100,144a28,28,0,1,1,28,28A28,28,0,0,1,100,144Zm147.21,9.59a12,12,0,0,1-16.81-2.39c-8.33-11.09-19.85-19.59-29.33-21.64a12,12,0,0,1-1.82-22.91,20,20,0,1,0-24.78-28.3,12,12,0,1,1-21-11.6,44,44,0,1,1,73.28,48.35,92.18,92.18,0,0,1,22.85,21.69A12,12,0,0,1,247.21,153.59Zm-192.28-24c-9.48,2.05-21,10.55-29.33,21.65A12,12,0,0,1,6.41,136.79,92.37,92.37,0,0,1,29.26,115.1a44,44,0,1,1,73.28-48.35,12,12,0,1,1-21,11.6,20,20,0,1,0-24.78,28.3,12,12,0,0,1-1.82,22.91Z"/></svg><span class="sync" id="syncDot" hidden></span></span>
-    Família
   </button>
 </div></nav>
 
@@ -585,6 +647,8 @@ const PH = {
   'stethoscope': '<path d="M248,160a40,40,0,1,0-52.64,37.94A28,28,0,0,1,168,220H144a28,28,0,0,1-28-28V154.9c31.73-5.78,56-34.09,56-67.73V40a12,12,0,0,0-12-12H136a12,12,0,0,0,0,24h12V87.17c0,24.4-19.47,44.52-43.41,44.83A44,44,0,0,1,60,88V52H72a12,12,0,0,0,0-24H48A12,12,0,0,0,36,40V88a68,68,0,0,0,56,66.93V192a52.06,52.06,0,0,0,52,52h24a52.06,52.06,0,0,0,51.61-45.72A40.08,40.08,0,0,0,248,160Zm-40,16a16,16,0,1,1,16-16A16,16,0,0,1,208,176Z"/>',
   'phone': '<path d="M224,154.8l-47.09-21.11-.18-.08a19.94,19.94,0,0,0-19,1.75,13.08,13.08,0,0,0-1.12.84l-22.31,19c-13-7.05-26.43-20.37-33.49-33.21l19.06-22.66a11.76,11.76,0,0,0,.85-1.15,20,20,0,0,0,1.66-18.83,1.42,1.42,0,0,1-.08-.18L101.2,32A20.06,20.06,0,0,0,80.42,20.15,60.27,60.27,0,0,0,28,80c0,81.61,66.39,148,148,148a60.27,60.27,0,0,0,59.85-52.42A20.06,20.06,0,0,0,224,154.8ZM176,204A124.15,124.15,0,0,1,52,80,36.29,36.29,0,0,1,80.48,44.46l18.82,42L80.14,109.28a12,12,0,0,0-.86,1.16A20,20,0,0,0,78,130.08c9.42,19.28,28.83,38.56,48.31,48A20,20,0,0,0,146,176.63a11.63,11.63,0,0,0,1.11-.85l22.43-19.07,42,18.81A36.29,36.29,0,0,1,176,204Z"/>'
 };
+PH['caret-right'] = '<path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/>';
+PH['caret-left'] = '<path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/>';
 const ph = (n, s = 26) => `<svg width="${s}" height="${s}" viewBox="0 0 256 256" fill="currentColor">${PH[n]}</svg>`;
 const ICON = {
   heart: `<span class="heart"><svg width="30" height="30" viewBox="0 0 256 256"><path d="${HEART}" stroke-linejoin="round"/></svg></span>`,
@@ -599,7 +663,7 @@ const ICON = {
    Store — mesma API para modo local e modo família (Firestore)
    Coleções: lists, items, meds, doses, tasks, meta
    ========================================================= */
-const COLS = ['lists', 'items', 'meds', 'doses', 'tasks', 'appts', 'notes', 'meta'];
+const COLS = ['lists', 'items', 'meds', 'doses', 'tasks', 'appts', 'notes', 'members', 'meta'];
 const LOCAL_KEY = 'cuidados:v3', MIRROR_KEY = 'cuidados:mirror', FAM_KEY = 'cuidados:family';
 const empty = () => Object.fromEntries(COLS.map(c => [c, {}]));
 
@@ -904,7 +968,7 @@ const Mala = (() => {
     if (b && b.dataset.golist) { lsSet('cuidados:curList', b.dataset.golist); editing = false; render(); }
   });
   const select = id => { lsSet('cuidados:curList', id); editing = false; render(); };
-  return { render, lists, select };
+  return { render, lists, select, cur, items };
 })();
 
 /* =========================================================
@@ -1056,7 +1120,7 @@ const Farm = (() => {
     if (isNew) setTimeout(() => $('fName').focus(), 250);
   }
   $('medAdd').onclick = () => Lock.ask(() => form(null));
-  return { render, meds, doses, todayCount };
+  return { render, meds, doses, todayCount, status };
 })();
 
 /* =========================================================
@@ -1187,7 +1251,8 @@ const Agenda = (() => {
       openCalendar(makeIcs(which === 'all' ? same.map(toIcs) : [toIcs(a)]));
     }
   });
-  return { render, next, label };
+  const upcoming = () => all().filter(a => isUpcoming(a) && +dt(a) - Date.now() < 7 * 86400000);
+  return { render, next, label, upcoming };
 })();
 
 /* =========================================================
@@ -1236,6 +1301,143 @@ const Tasks = (() => {
 })();
 
 /* =========================================================
+   Membros da família — papéis com vagas limitadas
+   Mamãe 1 · Papai 1 · Vovó 2 · Vovô 2 · Outro cuidador (babá, tia…) sem limite
+   member: { id (aparelho), role, name, seen }
+   ========================================================= */
+const ROLES = {
+  mamae:  { label: 'Mamãe', max: 1, needName: false },
+  papai:  { label: 'Papai', max: 1, needName: false },
+  vovo_f: { label: 'Vovó',  max: 2, needName: true, ph: 'Ex.: Cida' },
+  vovo_m: { label: 'Vovô',  max: 2, needName: true, ph: 'Ex.: João' },
+  outro:  { label: 'Outro cuidador', max: 99, needName: true, ph: 'Ex.: Tia Ana, Babá Rose' }
+};
+const Members = (() => {
+  const devId = () => { let d = lsGet('cuidados:device', ''); if (!d) { d = uid() + uid(); lsSet('cuidados:device', d); } return d; };
+  const guess = n => /^mam/i.test(n) ? 'mamae' : /^pap/i.test(n) ? 'papai' : /^vovó/i.test(n) ? 'vovo_f' : /^vovô/i.test(n) ? 'vovo_m' : n ? 'outro' : '';
+  const myRole = () => lsGet('cuidados:role', '') || guess(me());
+  const others = () => Store.all('members').filter(m => m.id !== devId());
+  const holders = role => others().filter(m => m.role === role);
+  const display = (role, name) => {
+    const R = ROLES[role]; if (!R) return name;
+    if (!R.needName) return R.label;
+    if (role === 'outro') return name;
+    return `${R.label} ${name.replace(new RegExp('^' + R.label + '\\s*', 'i'), '')}`.trim();
+  };
+  const bareName = (role, full) => role === 'vovo_f' || role === 'vovo_m' ? full.replace(/^vov[óô]\s*/i, '') : role === 'outro' ? full : '';
+  let syncing = false, prompted = false, seenDone = false;
+
+  function save(role, full) {
+    lsSet('cuidados:role', role); lsSet('cuidados:me', full);
+    if (Store.family) Store.put('members', { id: devId(), role, name: full, seen: Date.now() });
+    render();
+  }
+
+  // abre a escolha de papel. reason: texto opcional explicando por que está pedindo
+  function pick(reason = '') {
+    let role = myRole() || '';
+    const inFam = !!Store.family;
+    const btn = k => {
+      const R = ROLES[k], used = holders(k).length, full = inFam && used >= R.max;
+      const sub = !inFam || R.max > 2 ? '' : full ? 'ocupado' : R.max === 1 ? 'disponível' : `${R.max - used} de ${R.max} vaga${R.max - used > 1 ? 's' : ''}`;
+      return `<button data-role="${k}" class="${full ? 'full' : ''}${k === 'outro' ? ' wide' : ''}" aria-pressed="${k === role}">${R.label}${sub ? `<small>${sub}</small>` : ''}</button>`;
+    };
+    const body = () => {
+      const R = ROLES[role], hs = role ? holders(role) : [], full = inFam && R && hs.length >= R.max;
+      return `${full ? `<div class="holders"><p>${R.max === 1 ? `${R.label} já está cadastrada neste grupo` : `As ${R.max} vagas de ${R.label} já estão ocupadas`}:</p>
+          ${hs.map(h => `<button data-takeover="${h.id}"><b>${esc(h.name)}</b><span>Sou eu (troquei de celular)</span></button>`).join('')}
+          <p style="margin:10px 0 0;font-weight:600;color:var(--muted);font-size:14px">Se não for você, escolha outro papel.</p></div>` : ''}
+        ${R && R.needName && !full ? `<label class="field"><span>${role === 'outro' ? 'Nome' : 'Seu nome'}</span><input id="roleName" value="${esc(role === myRole() ? bareName(role, me()) : '')}" placeholder="${R.ph}" autocomplete="off" maxlength="20"></label>` : ''}`;
+    };
+    const html = () => `<h2>Quem usa este celular?</h2>
+      <p style="margin:-6px 0 14px;color:var(--muted);font-weight:600">${reason || 'Assim todo mundo vê quem deu cada dose e quem conferiu a mala.'}</p>
+      <div class="roles">${['mamae', 'papai', 'vovo_f', 'vovo_m', 'outro'].map(btn).join('')}</div>
+      <div id="roleBody">${body()}</div>
+      <p class="ferr" id="formErr"></p>
+      <div class="actions" style="margin-top:0"><button class="ghost" data-skip>Agora não</button><button class="big" data-rolesave>Salvar</button></div>`;
+    Sheet.open(html(), async e => {
+      const rb = e.target.closest('[data-role]');
+      if (rb) {
+        role = rb.dataset.role;
+        document.querySelectorAll('[data-role]').forEach(b => b.setAttribute('aria-pressed', b.dataset.role === role));
+        $('roleBody').innerHTML = body(); $('formErr').textContent = '';
+        const i = $('roleName'); if (i) setTimeout(() => i.focus(), 50);
+        return;
+      }
+      const tk = e.target.closest('[data-takeover]');
+      if (tk) {
+        const h = Store.get('members', tk.dataset.takeover);
+        if (!(await ask(`Este celular passa a ser "${h.name}". O celular antigo deixa de aparecer na família.`, { title: `Você é ${h.name}?`, icon: ph('user'), ok: `Sim, sou ${h.name}` }))) return;
+        Store.del('members', h.id); save(h.role, h.name); Sheet.close(); toast(`Bem-vindo de volta, ${h.name}!`); return;
+      }
+      if (e.target.closest('[data-skip]')) return Sheet.close();
+      if (e.target.closest('[data-rolesave]')) {
+        if (!role) return formErr('Escolha quem você é.');
+        const R = ROLES[role];
+        if (inFam && holders(role).length >= R.max) return formErr(`Não há vaga de ${R.label}. Se for você em outro celular, toque em "Sou eu".`);
+        let full = R.label;
+        if (R.needName) {
+          const n = ($('roleName')?.value || '').trim();
+          if (!n) return formErr(role === 'outro' ? 'Escreva o nome.' : `Escreva seu nome para diferenciar as ${role === 'vovo_f' ? 'avós' : 'pessoas'}.`);
+          full = display(role, n);
+        }
+        if (inFam && others().some(m => m.name.toLowerCase() === full.toLowerCase())) return formErr(`Já existe "${full}" na família. Use outro nome.`);
+        save(role, full); Sheet.close(); toast(`Este celular é de: ${full}`);
+      }
+    });
+  }
+
+  // garante que este aparelho está registrado na família (roda a cada atualização)
+  function sync() {
+    if (!Store.family || Store.status !== 'ok' || syncing) return;
+    syncing = true;
+    try {
+      const mine = Store.get('members', devId()), role = myRole(), name = me();
+      if (mine) {
+        if (!seenDone) { seenDone = true; Store.put('members', { ...mine, seen: Date.now() }); }
+        if (mine.name !== name || mine.role !== role) { lsSet('cuidados:me', mine.name); lsSet('cuidados:role', mine.role); }
+        return;
+      }
+      const R = ROLES[role];
+      const ok = R && name && holders(role).length < R.max && !others().some(m => m.name.toLowerCase() === name.toLowerCase());
+      if (ok) { seenDone = true; Store.put('members', { id: devId(), role, name, seen: Date.now() }); }
+      else if (!prompted) {
+        prompted = true;
+        const why = !name ? '' : !R ? 'Escolha seu papel na família.'
+          : holders(role).length >= R.max ? `Já existe ${R.max === 1 ? R.label : `${R.max} pessoas como ${R.label}`} nesta família. Se for você em outro celular, toque em "Sou eu".`
+          : `Já existe "${name}" na família. Use outro nome.`;
+        setTimeout(() => pick(why), 300);
+      }
+    } finally { syncing = false; }
+  }
+
+  function render() {
+    const box = $('meCard'); if (!box) return;
+    if (box.contains(document.activeElement) && document.activeElement.tagName === 'INPUT') return;
+    const role = myRole(), name = me();
+    const ms = Store.all('members').sort((a, b) => Object.keys(ROLES).indexOf(a.role) - Object.keys(ROLES).indexOf(b.role) || a.name.localeCompare(b.name));
+    box.innerHTML = `<div class="me-row"><span class="av">${ph('user', 24)}</span>
+        <span class="nm"><small>Este celular é de</small><b>${name ? esc(name) : 'Ninguém escolhido'}</b></span>
+        <button class="pill" data-pickrole>${name ? 'Trocar' : 'Escolher'}</button></div>
+      ${Store.family && ms.length ? `<ul class="mlist">${ms.map(m => `<li>
+          <span class="rl">${esc((ROLES[m.role] || ROLES.outro).label.split(' ')[0])}</span>
+          <span class="mn">${esc(m.name)}${m.id === devId() ? ' (este celular)' : ''}<small>${m.seen ? 'Usou o app ' + ago(Date.now() - m.seen) : ''}</small></span>
+          ${m.id === devId() ? '' : `<button class="sbtn d eo" data-rmmember="${m.id}" aria-label="Remover ${esc(m.name)}">${ICON.trash}</button>`}
+        </li>`).join('')}</ul>
+        <p style="margin:10px 0 0">Vagas: 1 Mamãe, 1 Papai, 2 Vovós e 2 Vovôs. Remova quem trocou de celular para liberar a vaga.</p>` : ''}`;
+  }
+  document.addEventListener('click', async e => {
+    if (e.target.closest('[data-pickrole]')) return pick();
+    const rm = e.target.closest('[data-rmmember]');
+    if (rm) {
+      const m = Store.get('members', rm.dataset.rmmember);
+      if (m && Lock.ask() && (await ask(`A vaga de ${(ROLES[m.role] || ROLES.outro).label} fica livre. Se ${m.name} abrir o app de novo, vai precisar escolher o papel outra vez.`, { title: `Remover ${m.name}?`, danger: true, ok: 'Remover' }))) Store.del('members', m.id);
+    }
+  });
+  return { pick, sync, render, devId, myRole };
+})();
+
+/* =========================================================
    Módulo 4 — Família (nome do bebê + compartilhamento)
    ========================================================= */
 const Fam = (() => {
@@ -1245,8 +1447,6 @@ const Fam = (() => {
     document.querySelectorAll('[data-hello]').forEach(el => { el.textContent = name ? `Cuidados da ${name} ♡` : 'Cuidados do bebê ♡'; });
     if (document.activeElement !== $('babyName')) $('babyName').value = name;
     $('syncDot').hidden = !(Store.family && Store.status === 'ok');
-    if (document.activeElement !== $('meName')) $('meName').value = me();
-    document.querySelectorAll('#whoBtns button').forEach(b => b.setAttribute('aria-pressed', me() === b.dataset.who || (b.dataset.who.startsWith('Vov') && me().startsWith(b.dataset.who + ' '))));
 
     const st = Store.status;
     const stHtml = st === 'ok' ? '<div class="status ok"><i></i>Sincronizado</div>'
@@ -1286,14 +1486,6 @@ const Fam = (() => {
     }
   });
   $('babyName').addEventListener('change', e => Store.put('meta', { ...settings(), babyName: e.target.value.trim() }));
-  const setMe = v => { lsSet('cuidados:me', v.trim()); render(); };
-  $('meName').addEventListener('change', e => setMe(e.target.value));
-  $('whoBtns').addEventListener('click', e => {
-    const b = e.target.closest('[data-who]'); if (!b) return;
-    const v = b.dataset.who;
-    if (v.startsWith('Vov')) { const i = $('meName'); i.value = v + ' '; i.focus(); i.setSelectionRange(i.value.length, i.value.length); return; }
-    setMe(v); toast(`Este celular é de: ${v}`);
-  });
 
   $('bkExport').onclick = () => {
     const payload = { app: 'cuidados', version: 4, exported: new Date().toISOString(), data: Store.data };
@@ -1331,21 +1523,23 @@ const Notes = (() => {
   ];
   const all = () => Store.all('notes').sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-  function render() {
-    const box = $('notesBox'), ns = all();
-    if (!ns.length) {
-      box.innerHTML = Store.status === 'connecting' || /^vov/i.test(me()) ? '' :
-        `<button class="notes-empty" data-nadd>${ph('push-pin', 18)} Avisos para os avós: toque para adicionar (ex.: quantidade da mamadeira)</button>`;
-      return;
-    }
-    box.innerHTML = `<section class="notes" aria-label="Avisos importantes">
-      <div class="notes-h"><b>${ph('push-pin', 18)} Avisos importantes</b><button class="eo" data-nadd>+ Aviso</button></div>
-      ${ns.map(n => `<div class="note-c">
+  const isNew = n => n.updated && Date.now() - n.updated < 24 * 3600000 && n.by !== me();
+  const card = n => `<div class="note-c">
         <div class="note-e">${noteIco(n.emoji || '📌', 28)}</div>
         <div class="note-b">${n.title ? `<p class="note-t">${esc(n.title)}</p>` : ''}<p class="note-x">${esc(n.text)}</p>
           ${n.updated ? `<small class="note-by">Atualizado ${esc(byTxt(n.by, n.updated).replace(/^Hoje/, 'hoje').replace(/^Ontem/, 'ontem'))}</small>` : ''}</div>
         <button class="sbtn eo" data-nedit="${n.id}" aria-label="Editar aviso">${ICON.pen}</button>
-      </div>`).join('')}</section>`;
+      </div>`;
+
+  function render() {
+    const ns = all(), box = $('homeNotes');
+    if (!ns.length) {
+      box.innerHTML = Store.status === 'connecting' || /^vov/i.test(me()) ? '' :
+        `<button class="notes-empty" data-nadd>${ph('push-pin', 18)} Avisos para os avós: toque para criar (ex.: quantidade da mamadeira)</button>`;
+      return;
+    }
+    box.innerHTML = `<div class="hsec-h" style="--acc:var(--sun)"><b style="color:var(--sun)">${ph('push-pin', 20)} Avisos importantes</b><button class="eo" data-nadd>+ Aviso</button></div>
+      <div class="notes-wrap">${ns.map(card).join('')}</div>`;
   }
 
   function form(n) {
@@ -1386,12 +1580,67 @@ const Notes = (() => {
     if (isNew) setTimeout(() => $('nText').focus(), 250);
   }
 
-  $('notesBox').addEventListener('click', e => {
-    if (e.target.closest('[data-nadd]')) Lock.ask(() => form(null));
+  $('homeNotes').addEventListener('click', e => {
+    if (e.target.closest('[data-nadd]')) return Lock.ask(() => form(null));
     const ed = e.target.closest('[data-nedit]');
     if (ed) { const n = Store.get('notes', ed.dataset.nedit); Lock.ask(() => form(n)); }
   });
   return { render, all };
+})();
+
+/* =========================================================
+   Módulo — Início (avisos + resumo de hoje)
+   ========================================================= */
+const Home = (() => {
+  const arrow = ph('caret-right', 18);
+  function render() {
+    const who = me(), name = ((Store.get('meta', 'settings') || {}).babyName || '').trim();
+    $('homeTitle').textContent = who ? `Olá, ${who}!` : 'Olá!';
+    const parts = [];
+
+    // remédios
+    const meds = Farm.meds();
+    if (meds.length) {
+      parts.push(`<div class="hsec-h"><b>${ph('pill', 20)} Remédios de hoje</b></div>`);
+      meds.forEach(m => {
+        const st = Farm.status(m), last = Farm.doses(m)[0], n = Farm.todayCount(m);
+        const tag = st.cls === 'early' ? `<span class="tag wait">Aguarde ${hhmm(new Date(st.until))}</span>`
+          : st.cls === 'complete' ? '<span class="tag ok">Completo ✓</span>' : '<span class="tag go">Pode dar</span>';
+        parts.push(`<button class="hcard" data-goto="farm">
+          <span class="hi" style="background:var(--lilac-soft);color:var(--lilac)">${ph('pill', 22)}</span>
+          <span class="hb"><b>${esc(m.name)} · ${n}/${m.perDay}</b><small>${last ? 'Última dose ' + ago(Date.now() - last.ts) + (last.by ? ' · ' + esc(last.by) : '') : 'Nenhuma dose ainda'}</small></span>
+          ${tag}</button>`);
+      });
+    }
+
+    // agenda
+    const up = Agenda.upcoming().slice(0, 2);
+    if (up.length) {
+      parts.push(`<div class="hsec-h" style="margin-top:18px"><b>${ph('calendar-blank', 20)} Próximos compromissos</b></div>`);
+      up.forEach(a => parts.push(`<button class="hcard" data-goto="agenda">
+        <span class="hi" style="background:var(--sky-soft);color:var(--sky)">${ph('calendar-blank', 22)}</span>
+        <span class="hb"><b>${esc(a.title)}</b><small>${esc(Agenda.label(a))}${a.place ? ' · ' + esc(a.place) : ''}</small></span>${arrow}</button>`));
+    }
+
+    // mala
+    const l = Mala.cur();
+    if (l) {
+      const its = Mala.items(l), done = its.filter(i => i.done).length, left = its.length - done;
+      const full = its.length && !left;
+      parts.push(`<div class="hsec-h" style="margin-top:18px"><b>${ph('backpack', 20)} Malinha</b></div>
+        <button class="hcard" data-goto="mala">
+          <span class="hi" style="background:${full ? 'var(--mint-soft);color:var(--mint)' : 'var(--rose-soft);color:var(--rose)'}">${ph('backpack', 22)}</span>
+          <span class="hb"><b>${esc(l.name)}</b><small>${!its.length ? 'Lista vazia' : full ? 'Pronta para sair!' : `${left} ${left === 1 ? 'item faltando' : 'itens faltando'} · ${done} de ${its.length}`}</small></span>
+          ${full ? '<span class="tag ok">Pronta ✓</span>' : arrow}</button>`);
+    }
+    $('homeToday').innerHTML = parts.join('');
+  }
+  $('homeToday').addEventListener('click', e => { const b = e.target.closest('[data-goto]'); if (b) go(b.dataset.goto); });
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-gofam]')) go('fam');
+    else if (e.target.closest('[data-gohome]')) go('home');
+  });
+  return { render };
 })();
 
 /* =========================================================
@@ -1448,13 +1697,15 @@ document.addEventListener('click', e => { if (e.target.closest('[data-summary]')
 /* =========================================================
    Navegação e inicialização
    ========================================================= */
-function render() { Lock.apply(); Notes.render(); Mala.render(); Farm.render(); Agenda.render(); Tasks.render(); Fam.render(); }
+function render() { Lock.apply(); Members.render(); Notes.render(); Home.render(); Mala.render(); Farm.render(); Agenda.render(); Tasks.render(); Fam.render(); }
 Store.on(render);
+Store.on(() => Members.sync());
 
-const VIEWS = { mala: 'v-mala', farm: 'v-farm', agenda: 'v-agenda', task: 'v-task', fam: 'v-fam' };
+const VIEWS = { home: 'v-home', mala: 'v-mala', farm: 'v-farm', agenda: 'v-agenda', task: 'v-task', fam: 'v-fam' };
 function go(tab) {
   Object.entries(VIEWS).forEach(([k, v]) => { $(v).hidden = k !== tab; });
-  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+  const navTab = tab === 'fam' ? 'home' : tab;
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === navTab));
   try { sessionStorage.setItem('tab', tab); } catch {}
   window.scrollTo(0, 0);
 }
@@ -1472,36 +1723,17 @@ if (Store.family && Cloud.configured()) {
   Store.data = { ...empty(), ...d };
   render();
 }
-let start = 'mala'; try { start = sessionStorage.getItem('tab') || 'mala'; } catch {}
+let start = 'home'; try { start = sessionStorage.getItem('tab') || 'home'; } catch {}
+if (!VIEWS[start]) start = 'home';
 go(start);
 
-setInterval(() => { const was = document.body.classList.contains('locked'); Lock.apply(); if (was !== document.body.classList.contains('locked')) render(); else { Farm.render(); Agenda.render(); Mala.render(); } }, 30000);
+setInterval(() => { const was = document.body.classList.contains('locked'); Lock.apply(); if (was !== document.body.classList.contains('locked')) render(); else { Farm.render(); Agenda.render(); Mala.render(); Home.render(); } }, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
 
-// pergunta uma vez quem usa este celular
-if (!me() && !lsGet('cuidados:askedMe', false)) {
+// pergunta uma vez quem usa este celular (na família, Members.sync confere as vagas)
+if (!me() && !lsGet('cuidados:askedMe', false) && !Store.family) {
   lsSet('cuidados:askedMe', true);
-  setTimeout(() => Sheet.open(`<h2>Quem usa este celular?</h2>
-    <p style="margin:-6px 0 14px;color:var(--muted);font-weight:600">Assim todo mundo vê quem deu cada dose e quem conferiu a mala. Dá para mudar depois na aba Família.</p>
-    <div class="who" style="margin:0 0 12px"><button data-pickme="Mamãe">Mamãe</button><button data-pickme="Papai">Papai</button><button data-pickme="Vovó">Vovó</button><button data-pickme="Vovô">Vovô</button></div>
-    <label class="field"><span>Nome (para diferenciar os avós)</span><input id="pickName" placeholder="Ex.: Vovó Maria" autocomplete="off" maxlength="20"></label>
-    <p class="ferr" id="formErr"></p>
-    <div class="actions" style="margin-top:0"><button class="ghost" data-skip>Agora não</button><button class="big" data-savename>Salvar</button></div>`, async e => {
-    const pick = e.target.closest('[data-pickme]');
-    if (pick) {
-      const v = pick.dataset.pickme, i = $('pickName');
-      if (v.startsWith('Vov')) { i.value = v + ' '; i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
-      else i.value = v;
-      return;
-    }
-    if (e.target.closest('[data-skip]')) { Sheet.close(); return; }
-    if (e.target.closest('[data-savename]')) {
-      const v = $('pickName').value.trim();
-      if (!v) return formErr('Escolha uma opção ou escreva seu nome.');
-      if (/^vov[óô]$/i.test(v) && !(await ask(`Como são dois, o ideal é colocar o nome, por exemplo "${v} Maria".`, { title: `Salvar só "${v}"?`, icon: ph('user'), ok: 'Salvar assim', cancel: 'Colocar o nome' }))) return;
-      lsSet('cuidados:me', v); Sheet.close(); render();
-    }
-  }), 400);
+  setTimeout(() => Members.pick(), 400);
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
