@@ -1,4 +1,4 @@
-const CACHE = 'cuidados-v7';
+const CACHE = 'cuidados-v8';
 const FILES = ['./', './index.html', './config.js', './coelho-180.png', './coelho-192.png', './coelho-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
