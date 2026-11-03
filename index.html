@@ -20,6 +20,7 @@
   --lilac:#8E6FD8; --lilac-soft:#EEE7FF;
   --mint:#2F9E7C; --mint-soft:#DDF5EC;
   --sun:#B97A0C; --sun-soft:#FFF2D1;
+  --sky:#3F86CF; --sky-soft:#E1EEFD;
   --danger:#D6455D; --on-acc:#FFFFFF;
   --tabh:70px;
   color-scheme: light;
@@ -31,6 +32,7 @@
     --lilac:#B9A2FF; --lilac-soft:#34284F;
     --mint:#63D3AE; --mint-soft:#1E3A31;
     --sun:#F2C04E; --sun-soft:#3D3020;
+    --sky:#8CC4FF; --sky-soft:#1E3047;
     --danger:#FF7F95; --on-acc:#24141F;
     color-scheme: dark;
   }
@@ -54,9 +56,34 @@ input{font:inherit;color:var(--ink);-webkit-user-select:text;user-select:text}
 #v-farm{--acc:var(--lilac);--acc-soft:var(--lilac-soft)}
 #v-task{--acc:var(--mint);--acc-soft:var(--mint-soft)}
 #v-fam{--acc:var(--rose);--acc-soft:var(--rose-soft)}
+#v-agenda{--acc:var(--sky);--acc-soft:var(--sky-soft)}
+.txt{display:flex;flex-direction:column;min-width:0;flex:1}
+.by{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none!important;margin-top:1px}
+.banner{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin:10px 0 0;padding:12px 16px;border-radius:20px;background:var(--sky-soft);color:var(--ink);font-weight:700}
+.banner small{display:block;font-weight:600;color:var(--sky);font-size:14px}
+.banner svg{flex:none;color:var(--sky)}
+/* ---------- Agenda ---------- */
+.dayh{font-size:15px;font-weight:800;color:var(--acc);margin:18px 6px 8px}
+.appt{display:flex;gap:14px;padding:14px 14px 14px 16px;align-items:flex-start}
+.appt.today{outline:3px solid var(--acc);outline-offset:-3px}
+.atime{flex:none;min-width:58px;text-align:center;font-size:20px;font-weight:800;color:var(--acc);padding-top:2px;font-variant-numeric:tabular-nums}
+.abody{flex:1;min-width:0}
+.atitle{font-size:18px;font-weight:800;margin:0;overflow-wrap:anywhere}
+.aplace{font-size:14px;font-weight:600;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}
+.chip{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:5px 12px;border-radius:999px;background:var(--rose-soft);color:var(--rose);font-weight:700;font-size:14px}
+.aact{display:flex;flex-direction:column;gap:2px}
+.past{opacity:.6}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 12px}
+.quick button{padding:8px 14px;border-radius:999px;background:var(--surface);box-shadow:0 2px 0 var(--line);font-weight:700;font-size:15px}
+.field select{width:100%;min-height:56px;padding:0 14px;border-radius:18px;border:2px solid var(--line);background:var(--surface);font:inherit;font-weight:700;color:var(--ink);-webkit-appearance:none;appearance:none}
+.field input[type=date],.field input[type=time]{-webkit-appearance:none;appearance:none;display:flex;align-items:center}
+.who{display:flex;gap:8px;margin-top:10px}
+.who button{flex:1;min-height:48px;border-radius:16px;background:var(--rose-soft);color:var(--rose);font-weight:800}
+.who button[aria-pressed="true"]{background:var(--rose);color:var(--on-acc)}
 
 header{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:8px 0 6px;min-height:64px}
-.hello{display:block;font-size:15px;font-weight:700;color:var(--acc);margin-bottom:2px}
+.hello{display:block;font-size:15px;font-weight:700;color:var(--acc);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header>div{min-width:0}
 h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.1}
 .listbtn{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
 .listbtn .t{display:flex;align-items:center;gap:6px}
@@ -160,12 +187,13 @@ ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10p
 /* ---------- Tab bar ---------- */
 nav.tabs{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0));z-index:5}
 nav.tabs .in{max-width:536px;margin:0 auto;display:flex;height:var(--tabh);background:var(--surface);border-radius:26px;padding:6px;box-shadow:0 6px 24px rgba(74,35,64,.14)}
-nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11.5px;font-weight:700;color:var(--muted);border-radius:20px;transition:background .2s,color .2s}
+nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:700;color:var(--muted);border-radius:20px;min-width:0;transition:background .2s,color .2s}
 nav.tabs button[aria-selected="true"]{background:var(--tc-soft);color:var(--tc)}
 nav.tabs [data-tab=mala]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
 nav.tabs [data-tab=farm]{--tc:var(--lilac);--tc-soft:var(--lilac-soft)}
 nav.tabs [data-tab=task]{--tc:var(--mint);--tc-soft:var(--mint-soft)}
 nav.tabs [data-tab=fam]{--tc:var(--rose);--tc-soft:var(--rose-soft)}
+nav.tabs [data-tab=agenda]{--tc:var(--sky);--tc-soft:var(--sky-soft)}
 nav.tabs .ico{position:relative;display:grid;place-items:center}
 nav.tabs .badge{position:absolute;top:-6px;left:16px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--rose);color:#fff;font-size:11px;line-height:18px;text-align:center}
 nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-radius:50%;background:var(--mint);border:2px solid var(--surface)}
@@ -184,7 +212,7 @@ nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-
 .actions{display:flex;gap:10px;margin-top:8px}
 .actions .ghost{flex:1}
 .actions .big{flex:2}
-.toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 30px + env(safe-area-inset-bottom,0));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;z-index:20;animation:up .2s ease}
+.toast{position:fixed;left:50%;bottom:calc(var(--tabh) + 30px + env(safe-area-inset-bottom,0));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;z-index:20;white-space:nowrap;animation:up .2s ease}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -200,6 +228,7 @@ nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-
     </button>
     <button class="pill" id="malaEdit">Editar</button>
   </header>
+  <div id="malaBanner"></div>
   <section class="bag" id="bag" aria-live="polite">
     <div class="count"><b id="bagNum">0</b><span id="bagLbl"></span></div>
     <div class="bar"><i id="bagFill"></i></div>
@@ -236,6 +265,15 @@ nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-
   <ul id="taskList" style="margin-top:12px"></ul>
 </main>
 
+<!-- ================= AGENDA ================= -->
+<main class="view" id="v-agenda" hidden>
+  <header>
+    <div><span class="hello" data-hello></span><h1>Agenda</h1></div>
+    <button class="pill" id="apptAdd">+ Compromisso</button>
+  </header>
+  <div id="apptList"></div>
+</main>
+
 <!-- ================= FAMÍLIA ================= -->
 <main class="view" id="v-fam" hidden>
   <header><div><span class="hello" data-hello></span><h1>Família</h1></div></header>
@@ -243,7 +281,21 @@ nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-
     <label class="field" style="margin:0"><span>Nome do bebê</span>
       <input id="babyName" placeholder="Ex.: Lina" autocomplete="off" maxlength="30"></label>
   </section>
+  <section class="card fcard">
+    <label class="field" style="margin:0"><span>Quem usa este celular</span>
+      <input id="meName" placeholder="Ex.: Mamãe" autocomplete="off" maxlength="20"></label>
+    <div class="who" id="whoBtns"><button data-who="Mamãe">Mamãe</button><button data-who="Papai">Papai</button></div>
+    <p style="margin:10px 0 0">Aparece no histórico de doses, na mala e nas pendências.</p>
+  </section>
   <div id="famBox"></div>
+  <section class="card fcard">
+    <h2>Backup</h2>
+    <p>Salve uma cópia de tudo em um arquivo (no app Arquivos, no WhatsApp ou no e-mail). Para restaurar, importe o arquivo.</p>
+    <button class="big" id="bkExport">Exportar backup</button>
+    <div style="height:10px"></div>
+    <button class="ghost" id="bkImport">Importar backup</button>
+    <input type="file" id="bkFile" accept=".json,application/json" hidden>
+  </section>
 </main>
 
 <!-- ================= TAB BAR ================= -->
@@ -255,6 +307,10 @@ nav.tabs .sync{position:absolute;top:-3px;left:19px;width:9px;height:9px;border-
   <button data-tab="farm" role="tab" aria-selected="false">
     <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg><span class="badge" id="farmBadge" hidden></span></span>
     Remédios
+  </button>
+  <button data-tab="agenda" role="tab" aria-selected="false">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="4"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M12 17.6s-2.4-1.4-2.4-2.9c0-.8.6-1.4 1.3-1.4.5 0 .9.3 1.1.7.2-.4.6-.7 1.1-.7.7 0 1.3.6 1.3 1.4 0 1.5-2.4 2.9-2.4 2.9z" fill="currentColor" stroke="none"/></svg><span class="badge" id="agendaBadge" hidden></span></span>
+    Agenda
   </button>
   <button data-tab="task" role="tab" aria-selected="false">
     <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.9l-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z"/></svg><span class="badge" id="taskBadge" hidden></span></span>
@@ -298,11 +354,51 @@ const toast = msg => {
   const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
   document.body.appendChild(t); setTimeout(() => t.remove(), 2200);
 };
+const me = () => lsGet('cuidados:me', '') || '';
+const byTxt = (who, ts) => [when(ts), who].filter(Boolean).join(' · ');
+
+/* ---------- arquivos: calendário (.ics) e backup ---------- */
+const icsEsc = s => String(s ?? '').replace(/[\\,;]/g, m => '\\' + m).replace(/\n/g, '\\n');
+const icsDT = d => d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + 'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
+function makeIcs(events) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Cuidados do Bebe//PT-BR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  events.forEach(e => {
+    L.push('BEGIN:VEVENT', 'UID:' + e.uid + '@cuidados', 'DTSTAMP:' + stamp,
+      'DTSTART:' + icsDT(e.start), 'DTEND:' + icsDT(e.end), 'SUMMARY:' + icsEsc(e.title));
+    if (e.rrule) L.push('RRULE:' + e.rrule);
+    if (e.location) L.push('LOCATION:' + icsEsc(e.location));
+    if (e.desc) L.push('DESCRIPTION:' + icsEsc(e.desc));
+    L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEsc(e.title), 'TRIGGER:' + e.alarm, 'END:VALARM', 'END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n');
+}
+function openCalendar(ics) {
+  // No iPhone, abrir um arquivo .ics mostra a tela "Adicionar ao Calendário"
+  const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url; a.target = '_blank';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 120000);
+}
+async function shareFile(name, mime, text) {
+  const file = new File([text], name, { type: mime });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: name }); return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  const url = URL.createObjectURL(file), a = document.createElement('a');
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
 const HEART = 'M12 20.5s-7.6-4.6-9.5-9.3C1 7.7 3.2 4 6.8 4c2.1 0 3.5 1.1 4.3 2.4.4.7 1.4.7 1.8 0C13.7 5.1 15.1 4 17.2 4c3.6 0 5.8 3.7 4.3 7.2-1.9 4.7-9.5 9.3-9.5 9.3z';
 const ICON = {
   heart: `<span class="heart"><svg width="30" height="30" viewBox="0 0 24 24"><path d="${HEART}" stroke-linejoin="round"/></svg></span>`,
   pip: on => `<svg class="${on ? 'on' : ''}" width="16" height="16" viewBox="0 0 24 24"><path d="${HEART}"/></svg>`,
   trash: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+  bell: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>',
+  cal: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="4"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
   pen: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>'
 };
 
@@ -310,7 +406,7 @@ const ICON = {
    Store — mesma API para modo local e modo família (Firestore)
    Coleções: lists, items, meds, doses, tasks, meta
    ========================================================= */
-const COLS = ['lists', 'items', 'meds', 'doses', 'tasks', 'meta'];
+const COLS = ['lists', 'items', 'meds', 'doses', 'tasks', 'appts', 'meta'];
 const LOCAL_KEY = 'cuidados:v3', MIRROR_KEY = 'cuidados:mirror', FAM_KEY = 'cuidados:family';
 const empty = () => Object.fromEntries(COLS.map(c => [c, {}]));
 
@@ -338,7 +434,18 @@ const Store = {
     this.emit();
     if (this.family) Cloud.write(ops.map(([c, id]) => ({ type: 'del', c, id })));
   },
-  del(c, id) { this.delMany([[c, id]]); }
+  del(c, id) { this.delMany([[c, id]]); },
+  replaceAll(nd) {
+    const ops = [];
+    COLS.forEach(c => {
+      const next = nd[c] || {};
+      Object.keys(this.data[c]).forEach(id => { if (!next[id]) ops.push({ type: 'del', c, id }); });
+      Object.values(next).forEach(d => ops.push({ type: 'set', c, d }));
+    });
+    this.data = Object.fromEntries(COLS.map(c => [c, { ...(nd[c] || {}) }]));
+    this.emit();
+    if (this.family) Cloud.write(ops);
+  }
 };
 
 /* ---------- dados iniciais / migração da versão anterior ---------- */
@@ -498,12 +605,18 @@ const Mala = (() => {
   function render() {
     const l = cur();
     if (!l) {
-      $('malaTitle').textContent = 'Malinha';
+      $('malaTitle').textContent = 'Malinha'; $('malaBanner').innerHTML = '';
       $('bag').hidden = true; $('malaDock').hidden = true; $('malaAdd').hidden = true; $('malaEdit').hidden = true;
       $('malaList').innerHTML = `<li class="empty">${Store.status === 'connecting' ? 'Sincronizando…' : 'Nenhuma lista. Toque no título para criar uma.'}</li>`;
       return;
     }
     $('bag').hidden = false; $('malaEdit').hidden = false;
+    const nx = Agenda.next();
+    if (nx) {
+      const ml = nx.listId && Store.get('lists', nx.listId);
+      const sub = ml ? (ml.id === l.id ? 'Esta é a mala certa' : `Toque para abrir a mala "${ml.name}"`) : 'Confira a mala antes de sair';
+      $('malaBanner').innerHTML = `<button class="banner" data-golist="${ml ? ml.id : ''}">${ICON.cal}<span>${esc(nx.title)} · ${Agenda.label(nx)}<small>${esc(sub)}</small></span></button>`;
+    } else $('malaBanner').innerHTML = '';
     const its = items(l), total = its.length, done = its.filter(i => i.done).length, full = total > 0 && done === total;
     $('malaTitle').textContent = l.name;
     $('bagNum').textContent = total ? `${done}/${total}` : '0';
@@ -521,14 +634,14 @@ const Mala = (() => {
       ? '<li class="empty">Lista vazia. Toque em Editar para adicionar itens.</li>'
       : its.map(i => editing
         ? `<li class="erow"><input data-id="${i.id}" value="${esc(i.name)}" aria-label="Nome do item"><button class="ibtn d" data-del="${i.id}" aria-label="Remover ${esc(i.name)}">${ICON.trash}</button></li>`
-        : `<li><button class="row${i.done ? ' done' : ''}" data-id="${i.id}" aria-pressed="${i.done}">${ICON.heart}<span class="name">${esc(i.name)}</span></button></li>`
+        : `<li><button class="row${i.done ? ' done' : ''}" data-id="${i.id}" aria-pressed="${i.done}">${ICON.heart}<span class="txt"><span class="name">${esc(i.name)}</span>${i.done && i.doneAt ? `<small class="by">${esc(byTxt(i.doneBy, i.doneAt))}</small>` : ''}</span></button></li>`
       ).join('');
   }
 
   $('malaList').addEventListener('click', e => {
     const del = e.target.closest('[data-del]'), b = e.target.closest('.row');
     if (del) Store.del('items', del.dataset.del);
-    else if (b) { const it = Store.get('items', b.dataset.id); Store.put('items', { ...it, done: !it.done }); }
+    else if (b) { const it = Store.get('items', b.dataset.id); Store.put('items', { ...it, done: !it.done, doneBy: it.done ? '' : me(), doneAt: it.done ? 0 : Date.now() }); }
   });
   $('malaList').addEventListener('change', e => {
     if (!e.target.matches('input[data-id]')) return;
@@ -547,7 +660,7 @@ const Mala = (() => {
   $('malaEdit').onclick = () => { document.activeElement?.blur(); editing = !editing; render(); };
   $('malaReset').onclick = () => {
     const l = cur(); if (!confirm(`Desmarcar todos os itens de "${l.name}"?`)) return;
-    Store.putMany('items', items(l).filter(i => i.done).map(i => ({ ...i, done: false })));
+    Store.putMany('items', items(l).filter(i => i.done).map(i => ({ ...i, done: false, doneBy: '', doneAt: 0 })));
   };
 
   function listsHtml() {
@@ -583,7 +696,12 @@ const Mala = (() => {
     }
   }
   $('openLists').onclick = () => Sheet.open(listsHtml(), onLists);
-  return { render };
+  $('malaBanner').addEventListener('click', e => {
+    const b = e.target.closest('[data-golist]');
+    if (b && b.dataset.golist) { lsSet('cuidados:curList', b.dataset.golist); editing = false; render(); }
+  });
+  const select = id => { lsSet('cuidados:curList', id); editing = false; render(); };
+  return { render, lists, select };
 })();
 
 /* =========================================================
@@ -620,16 +738,17 @@ const Farm = (() => {
             <div><p class="mname">${esc(m.name)}</p>
               <span class="drops">${m.drops} gota${m.drops > 1 ? 's' : ''}</span>
               <p class="mdesc">${m.perDay}x ao dia${m.times ? ' · ' + esc(m.times) : ''}</p></div>
-            <button class="sbtn" data-edit="${m.id}" aria-label="Editar ${esc(m.name)}">${ICON.pen}</button>
+            <div style="display:flex"><button class="sbtn" data-cal="${m.id}" aria-label="Lembrete no Calendário">${ICON.bell}</button>
+            <button class="sbtn" data-edit="${m.id}" aria-label="Editar ${esc(m.name)}">${ICON.pen}</button></div>
           </div>
           <div class="mstat">
-            <div class="since">${lt ? ago(Date.now() - lt) : 'Sem registro'}<small>${lt ? 'última dose · ' + when(lt) : 'nenhuma dose registrada'}</small></div>
+            <div class="since">${lt ? ago(Date.now() - lt) : 'Sem registro'}<small>${lt ? 'última dose · ' + esc(byTxt(ds[0].by, lt)) : 'nenhuma dose registrada'}</small></div>
             <div class="today"><span class="pips">${pips}</span>${n}/${m.perDay}</div>
           </div>
           <p class="note">${st.note}</p>
           <button class="dose" data-dose="${m.id}">Registrar dose</button>
           ${ds.length ? `<details class="hist" data-med="${m.id}"${openIds.includes(m.id) ? ' open' : ''}><summary>Histórico</summary><ul>${ds.slice(0, 15).map(d =>
-            `<li><span>${when(d.ts)}</span><button data-undo="${d.id}">Remover</button></li>`).join('')}</ul></details>` : ''}
+            `<li><span>${esc(byTxt(d.by, d.ts))}</span><button data-undo="${d.id}">Remover</button></li>`).join('')}</ul></details>` : ''}
         </article>`;
       }).join('');
     const b = $('farmBadge'); b.hidden = !pending; b.textContent = pending;
@@ -638,16 +757,30 @@ const Farm = (() => {
   $('medList').addEventListener('click', e => {
     const t = a => e.target.closest(`[data-${a}]`);
     if (t('dose')) {
-      const m = Store.get('meds', t('dose').dataset.dose), st = status(m), lt = doses(m)[0]?.ts;
+      const m = Store.get('meds', t('dose').dataset.dose), st = status(m), last = doses(m)[0], lt = last?.ts;
       if (st.cls === 'complete' && !confirm(`A meta de hoje de ${m.name} já foi atingida (${m.perDay}x). Registrar outra dose mesmo assim?`)) return;
-      if (st.cls === 'early' && !confirm(`A última dose de ${m.name} foi ${ago(Date.now() - lt)}. Registrar mesmo assim?`)) return;
-      Store.put('doses', { id: uid(), medId: m.id, ts: Date.now() });
+      if (st.cls === 'early' && !confirm(`A última dose de ${m.name} foi ${ago(Date.now() - lt)}${last.by ? ', dada por ' + last.by : ''}. Registrar mesmo assim?`)) return;
+      Store.put('doses', { id: uid(), medId: m.id, ts: Date.now(), by: me() });
       toast('Dose registrada');
     } else if (t('undo')) {
       const d = Store.get('doses', t('undo').dataset.undo);
       if (d && confirm(`Remover o registro de ${when(d.ts)}?`)) Store.del('doses', d.id);
     } else if (t('edit')) form(Store.get('meds', t('edit').dataset.edit));
+    else if (t('cal')) reminder(Store.get('meds', t('cal').dataset.cal));
   });
+
+  function reminder(m) {
+    const times = [...String(m.times || '').matchAll(/(\d{1,2})\s*[:h]\s*(\d{2})?/g)]
+      .map(x => [+x[1], +(x[2] || 0)]).filter(([h, mi]) => h < 24 && mi < 60);
+    if (!times.length) return alert('Cadastre os horários previstos (ex.: 08:00, 20:00) em Editar para criar os lembretes.');
+    if (!confirm(`Criar ${times.length} lembrete${times.length > 1 ? 's' : ''} diário${times.length > 1 ? 's' : ''} de ${m.name} no Calendário do iPhone?`)) return;
+    const base = new Date();
+    openCalendar(makeIcs(times.map(([h, mi], i) => {
+      const st = new Date(base.getFullYear(), base.getMonth(), base.getDate(), h, mi);
+      return { uid: m.id + '-' + i, start: st, end: new Date(+st + 10 * 60000), rrule: 'FREQ=DAILY',
+        title: `${m.name} · ${m.drops} gota${m.drops > 1 ? 's' : ''}`, desc: 'Registre a dose no app Cuidados.', alarm: 'PT0M' };
+    })));
+  }
 
   function form(m) {
     const isNew = !m;
@@ -688,6 +821,133 @@ const Farm = (() => {
 })();
 
 /* =========================================================
+   Módulo — Agenda (consultas, fisioterapia, vacinas)
+   appt: { id, title, date 'AAAA-MM-DD', time 'HH:MM', place, listId, by }
+   ========================================================= */
+const Agenda = (() => {
+  let showPast = false;
+  const WD = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+  const dt = a => new Date(a.date + 'T' + (a.time || '00:00'));
+  const all = () => Store.all('appts').sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const isUpcoming = a => +dt(a) >= Date.now() - 90 * 60000;   // continua visível até 1h30 depois do início
+  function dayName(date) {
+    const d = new Date(date + 'T00:00'), t = new Date(); t.setHours(0, 0, 0, 0);
+    const diff = Math.round((d - t) / 86400000);
+    if (diff === 0) return 'Hoje';
+    if (diff === 1) return 'Amanhã';
+    if (diff === -1) return 'Ontem';
+    return `${WD[d.getDay()][0].toUpperCase() + WD[d.getDay()].slice(1)}, ${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+  }
+  const label = a => { const n = dayName(a.date); return (n === 'Hoje' || n === 'Amanhã' ? n.toLowerCase() : n) + (a.time ? ' às ' + a.time : ''); };
+  const next = () => all().find(a => isUpcoming(a) && +dt(a) - Date.now() < 36 * 3600000);
+
+  function card(a, past) {
+    const ml = a.listId && Store.get('lists', a.listId);
+    const today = dayName(a.date) === 'Hoje';
+    return `<article class="card appt${today && !past ? ' today' : ''}${past ? ' past' : ''}">
+      <div class="atime">${esc(a.time || '—')}</div>
+      <div class="abody">
+        <p class="atitle">${esc(a.title)}</p>
+        ${a.place ? `<p class="aplace">${esc(a.place)}</p>` : ''}
+        ${ml && !past ? `<button class="chip" data-openmala="${ml.id}">Mala: ${esc(ml.name)}</button>` : ''}
+      </div>
+      <div class="aact">
+        ${past ? '' : `<button class="sbtn" data-acal="${a.id}" aria-label="Adicionar ao Calendário">${ICON.bell}</button>`}
+        <button class="sbtn" data-aedit="${a.id}" aria-label="Editar">${ICON.pen}</button>
+      </div></article>`;
+  }
+
+  function render() {
+    const up = all().filter(isUpcoming), past = all().filter(a => !isUpcoming(a)).reverse().slice(0, 20);
+    let html = '', lastDay = '';
+    if (!up.length) html = `<p class="empty">${Store.status === 'connecting' ? 'Sincronizando…' : 'Nenhum compromisso marcado. Toque em + Compromisso para agendar fisioterapia, consultas ou vacinas.'}</p>`;
+    up.forEach(a => { if (a.date !== lastDay) { html += `<h3 class="dayh">${dayName(a.date)}</h3>`; lastDay = a.date; } html += card(a, false); });
+    if (past.length) {
+      html += `<button class="ghost" style="margin-top:18px" data-togglepast>${showPast ? 'Ocultar anteriores' : `Ver anteriores (${past.length})`}</button>`;
+      if (showPast) html += '<div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">' + past.map(a => `<h3 class="dayh" style="margin:6px 6px 0">${dayName(a.date)}</h3>` + card(a, true)).join('') + '</div>';
+    }
+    $('apptList').innerHTML = html;
+    const todayN = up.filter(a => dayName(a.date) === 'Hoje').length;
+    const b = $('agendaBadge'); b.hidden = !todayN; b.textContent = todayN;
+  }
+
+  function toIcs(a) {
+    const st = dt(a), ml = a.listId && Store.get('lists', a.listId);
+    return { uid: a.id, start: st, end: new Date(+st + 60 * 60000), title: a.title, location: a.place,
+      desc: ml ? `Levar a mala: ${ml.name}` : '', alarm: '-PT1H' };
+  }
+
+  function form(a) {
+    const isNew = !a;
+    const t = new Date(); t.setDate(t.getDate() + 1);
+    a = a || { title: '', date: dayKey(t), time: '', place: '', listId: '' };
+    const opts = '<option value="">Nenhuma</option>' + Mala.lists().map(l => `<option value="${l.id}"${l.id === a.listId ? ' selected' : ''}>${esc(l.name)}</option>`).join('');
+    Sheet.open(`<h2>${isNew ? 'Novo compromisso' : 'Editar compromisso'}</h2>
+      <label class="field"><span>O que é</span><input id="aTitle" value="${esc(a.title)}" placeholder="Ex.: Fisioterapia" autocomplete="off"></label>
+      ${isNew ? '<div class="quick"><button data-q="Fisioterapia">Fisioterapia</button><button data-q="Pediatra">Pediatra</button><button data-q="Vacina">Vacina</button><button data-q="Exame">Exame</button></div>' : ''}
+      <div class="two">
+        <label class="field"><span>Dia</span><input id="aDate" type="date" value="${esc(a.date)}"></label>
+        <label class="field"><span>Horário</span><input id="aTime" type="time" value="${esc(a.time)}"></label>
+      </div>
+      <label class="field"><span>Local (opcional)</span><input id="aPlace" value="${esc(a.place)}" placeholder="Ex.: Clínica Crescer" autocomplete="off"></label>
+      <label class="field"><span>Mala para levar</span><select id="aList">${opts}</select></label>
+      ${isNew ? `<label class="field"><span>Repetir</span><select id="aRep">
+        <option value="0">Não repetir</option><option value="4">Toda semana, por 4 semanas</option>
+        <option value="8">Toda semana, por 8 semanas</option><option value="12">Toda semana, por 12 semanas</option></select></label>` : ''}
+      <div class="actions">
+        ${isNew ? '<button class="ghost" data-cancel>Cancelar</button>' : '<button class="ghost d" data-remove>Apagar</button>'}
+        <button class="big" data-save style="--acc:var(--sky)">Salvar</button>
+      </div>`, e => {
+      const q = e.target.closest('[data-q]');
+      if (q) {
+        $('aTitle').value = q.dataset.q;
+        const match = Mala.lists().find(l => l.name.toLowerCase().includes(q.dataset.q.toLowerCase().slice(0, 6)));
+        if (match) $('aList').value = match.id;
+        return;
+      }
+      if (e.target.closest('[data-cancel]')) return Sheet.close();
+      if (e.target.closest('[data-remove]')) {
+        if (confirm(`Apagar "${a.title}" de ${dayName(a.date).toLowerCase()}?`)) { Store.del('appts', a.id); Sheet.close(); }
+        return;
+      }
+      if (e.target.closest('[data-save]')) {
+        const title = $('aTitle').value.trim(), date = $('aDate').value, time = $('aTime').value;
+        if (!title) return alert('Informe o que é o compromisso.');
+        if (!date) return alert('Escolha o dia.');
+        const data = { title, date, time, place: $('aPlace').value.trim(), listId: $('aList').value };
+        if (isNew) {
+          const rep = +($('aRep')?.value || 0), docs = [];
+          for (let i = 0; i < Math.max(1, rep); i++) {
+            const d = new Date(date + 'T00:00'); d.setDate(d.getDate() + 7 * i);
+            docs.push({ id: uid() + i, ...data, date: dayKey(d), by: me() });
+          }
+          Store.putMany('appts', docs);
+          toast(docs.length > 1 ? `${docs.length} compromissos agendados` : 'Compromisso agendado');
+        } else Store.put('appts', { ...a, ...data });
+        Sheet.close();
+      }
+    });
+    if (isNew) setTimeout(() => $('aTitle').focus(), 250);
+  }
+
+  $('apptAdd').onclick = () => form(null);
+  $('apptList').addEventListener('click', e => {
+    const t = k => e.target.closest(`[data-${k}]`);
+    if (t('togglepast')) { showPast = !showPast; render(); }
+    else if (t('aedit')) form(Store.get('appts', t('aedit').dataset.aedit));
+    else if (t('openmala')) { Mala.select(t('openmala').dataset.openmala); go('mala'); }
+    else if (t('acal')) {
+      const a = Store.get('appts', t('acal').dataset.acal);
+      const same = all().filter(x => isUpcoming(x) && x.title === a.title && x.time === a.time);
+      if (same.length > 1 && confirm(`Adicionar todos os ${same.length} compromissos de "${a.title}" ao Calendário? (Cancelar adiciona só este.)`))
+        openCalendar(makeIcs(same.map(toIcs)));
+      else openCalendar(makeIcs([toIcs(a)]));
+    }
+  });
+  return { render, next, label };
+})();
+
+/* =========================================================
    Módulo 3 — Pendências
    ========================================================= */
 const Tasks = (() => {
@@ -703,7 +963,7 @@ const Tasks = (() => {
     const list = filter === 'todo' ? todo : done;
     $('taskList').innerHTML = list.length ? list.map(t => `
       <li class="task${t.done ? ' done' : ''}">
-        <button class="row${t.done ? ' done' : ''}" data-tog="${t.id}" aria-pressed="${t.done}">${ICON.heart}<span class="name">${esc(t.text)}</span></button>
+        <button class="row${t.done ? ' done' : ''}" data-tog="${t.id}" aria-pressed="${t.done}">${ICON.heart}<span class="txt"><span class="name">${esc(t.text)}</span>${t.done && t.doneAt ? `<small class="by">Concluída · ${esc(byTxt(t.doneBy, t.doneAt))}</small>` : (!t.done && t.by ? `<small class="by">Adicionada por ${esc(t.by)}</small>` : '')}</span></button>
         <button class="sbtn" data-ed="${t.id}" aria-label="Editar">${ICON.pen}</button>
         <button class="sbtn d" data-rm="${t.id}" aria-label="Excluir">${ICON.trash}</button>
       </li>`).join('')
@@ -712,7 +972,7 @@ const Tasks = (() => {
   const add = () => {
     const v = $('taskNew').value.trim(); if (!v) return;
     $('taskNew').value = ''; filter = 'todo';
-    Store.put('tasks', { id: uid(), text: v, done: false, created: Date.now() });
+    Store.put('tasks', { id: uid(), text: v, done: false, created: Date.now(), by: me() });
   };
   $('taskAddBtn').onclick = add;
   $('taskNew').addEventListener('keydown', e => e.key === 'Enter' && add());
@@ -720,7 +980,7 @@ const Tasks = (() => {
   $('fDone').onclick = () => { filter = 'done'; render(); };
   $('taskList').addEventListener('click', e => {
     const t = a => e.target.closest(`[data-${a}]`);
-    if (t('tog')) { const it = Store.get('tasks', t('tog').dataset.tog); Store.put('tasks', { ...it, done: !it.done }); }
+    if (t('tog')) { const it = Store.get('tasks', t('tog').dataset.tog); Store.put('tasks', { ...it, done: !it.done, doneBy: it.done ? '' : me(), doneAt: it.done ? 0 : Date.now() }); }
     else if (t('ed')) {
       const it = Store.get('tasks', t('ed').dataset.ed), v = prompt('Editar pendência', it.text);
       if (v && v.trim()) Store.put('tasks', { ...it, text: v.trim() });
@@ -742,6 +1002,8 @@ const Fam = (() => {
     document.querySelectorAll('[data-hello]').forEach(el => { el.textContent = name ? `Cuidados da ${name} ♡` : 'Cuidados do bebê ♡'; });
     if (document.activeElement !== $('babyName')) $('babyName').value = name;
     $('syncDot').hidden = !(Store.family && Store.status === 'ok');
+    if (document.activeElement !== $('meName')) $('meName').value = me();
+    document.querySelectorAll('#whoBtns button').forEach(b => b.setAttribute('aria-pressed', b.dataset.who === me()));
 
     const st = Store.status;
     const stHtml = st === 'ok' ? '<div class="status ok"><i></i>Sincronizado</div>'
@@ -781,16 +1043,36 @@ const Fam = (() => {
     }
   });
   $('babyName').addEventListener('change', e => Store.put('meta', { ...settings(), babyName: e.target.value.trim() }));
+  const setMe = v => { lsSet('cuidados:me', v.trim()); render(); };
+  $('meName').addEventListener('change', e => setMe(e.target.value));
+  $('whoBtns').addEventListener('click', e => { const b = e.target.closest('[data-who]'); if (b) { setMe(b.dataset.who); toast(`Este celular é de: ${b.dataset.who}`); } });
+
+  $('bkExport').onclick = () => {
+    const payload = { app: 'cuidados', version: 4, exported: new Date().toISOString(), data: Store.data };
+    shareFile(`cuidados-backup-${dayKey(new Date())}.json`, 'application/json', JSON.stringify(payload, null, 1));
+  };
+  $('bkImport').onclick = () => $('bkFile').click();
+  $('bkFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    try {
+      const j = JSON.parse(await f.text());
+      if (j.app !== 'cuidados' || !j.data || !j.data.lists) throw new Error();
+      const n = Object.keys(j.data.lists).length, d = j.exported ? new Date(j.exported).toLocaleDateString('pt-BR') : '?';
+      if (!confirm(`Backup de ${d} com ${n} lista(s). Substituir TODOS os dados atuais${Store.family ? ' (nos dois celulares)' : ''}?`)) return;
+      Store.replaceAll(j.data); toast('Backup restaurado');
+    } catch { alert('Este arquivo não é um backup válido do app.'); }
+  });
   return { render };
 })();
 
 /* =========================================================
    Navegação e inicialização
    ========================================================= */
-function render() { Mala.render(); Farm.render(); Tasks.render(); Fam.render(); }
+function render() { Mala.render(); Farm.render(); Agenda.render(); Tasks.render(); Fam.render(); }
 Store.on(render);
 
-const VIEWS = { mala: 'v-mala', farm: 'v-farm', task: 'v-task', fam: 'v-fam' };
+const VIEWS = { mala: 'v-mala', farm: 'v-farm', agenda: 'v-agenda', task: 'v-task', fam: 'v-fam' };
 function go(tab) {
   Object.entries(VIEWS).forEach(([k, v]) => { $(v).hidden = k !== tab; });
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
@@ -814,8 +1096,21 @@ if (Store.family && Cloud.configured()) {
 let start = 'mala'; try { start = sessionStorage.getItem('tab') || 'mala'; } catch {}
 go(start);
 
-setInterval(Farm.render, 30000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) Farm.render(); });
+setInterval(() => { Farm.render(); Agenda.render(); Mala.render(); }, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+
+// pergunta uma vez quem usa este celular
+if (!me() && !lsGet('cuidados:askedMe', false)) {
+  lsSet('cuidados:askedMe', true);
+  setTimeout(() => Sheet.open(`<h2>Quem usa este celular?</h2>
+    <p style="margin:-6px 0 14px;color:var(--muted);font-weight:600">Assim o app mostra quem deu cada dose e quem conferiu a mala. Dá para mudar depois na aba Família.</p>
+    <div class="who" style="margin:0 0 12px"><button data-pickme="Mamãe">Mamãe</button><button data-pickme="Papai">Papai</button></div>
+    <button class="ghost" data-pickme="">Agora não</button>`, e => {
+    const b = e.target.closest('[data-pickme]'); if (!b) return;
+    if (b.dataset.pickme) lsSet('cuidados:me', b.dataset.pickme);
+    Sheet.close(); render();
+  }), 400);
+}
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
