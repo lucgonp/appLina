@@ -1,0 +1,19 @@
+{
+  "name": "cuidados-do-bebe",
+  "private": true,
+  "description": "PWA de cuidados da bebê: malinha, remédios, agenda, avisos e família sincronizada.",
+  "scripts": {
+    "serve": "node tests/serve.mjs",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-cuidados \"node --test tests/rules/*.test.mjs\"",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run test:rules && npm run test:e2e",
+    "build": "node tests/build-site.mjs"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.4",
+    "@playwright/test": "1.56.0",
+    "firebase": "^10.12.2",
+    "firebase-tools": "^13.35.1"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "./",
+  "name": "Cuidados do Bebê",
+  "short_name": "Cuidados",
+  "description": "Malinha, remédios, agenda e avisos da bebê, para toda a família.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "pt-BR",
+  "background_color": "#FFF4F7",
+  "theme_color": "#FFF4F7",
+  "icons": [
+    {
+      "src": "icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icone-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

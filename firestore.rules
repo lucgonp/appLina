@@ -1,0 +1,203 @@
+rules_version = '2';
+// =====================================================================
+// Regras do servidor — "não confie no usuário".
+// A tela do app já trava edição, mas quem garante de verdade é aqui:
+//  • só membros com vaga gravam; só Mamãe e Papai editam remédios/listas/avisos
+//  • vagas limitadas (1 Mamãe, 1 Papai, 2 Vovós, 2 Vovôs) criadas uma única vez
+//  • dose atômica: compare-and-swap no remédio + intervalo mínimo conferido
+//    com o relógio do servidor (só uma dose extra explícita passa antes)
+//  • doses nunca são apagadas, só marcadas como corrigidas
+//  • formato e tamanho de todos os campos validados
+// Testes: tests/rules/firestore.rules.test.mjs (rodam no CI com o Emulator)
+// =====================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /families/{fid} {
+
+      // ---------- quem é quem ----------
+      function signedIn() { return request.auth != null; }
+      function docPath(c, id) { return /databases/$(database)/documents/families/$(fid)/$(c)/$(id); }
+      function myMemberAfter() { return getAfter(docPath('members', request.auth.uid)); }
+      // membro = tem documento de membro E a vaga aponta de volta para ele
+      function isMember() {
+        return signedIn()
+          && existsAfter(docPath('members', request.auth.uid))
+          && existsAfter(docPath('slots', myMemberAfter().data.slot))
+          && getAfter(docPath('slots', myMemberAfter().data.slot)).data.uid == request.auth.uid;
+      }
+      function isParent() { return isMember() && myMemberAfter().data.role in ['mamae', 'papai']; }
+
+      // ---------- ajudantes de validação ----------
+      function d() { return request.resource.data; }
+      function idOk(id) { return d().id == id; }
+      function str(v, lo, hi) { return v is string && v.size() >= lo && v.size() <= hi; }
+      function optStr(k, hi) { return !(k in d()) || str(d()[k], 0, hi); }
+      function optNum(k) { return !(k in d()) || d()[k] is number; }
+      function optBool(k) { return !(k in d()) || d()[k] is bool; }
+      function onlyChanged(keys) { return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys); }
+
+      // leitura: quem tem o código da família (o código é o segredo)
+      match /{col}/{docId} {
+        allow read: if signedIn();
+      }
+
+      // ---------- vagas ----------
+      function validSlotId(sid, role) {
+        return (role == 'mamae'  && sid == 'mamae_1')
+            || (role == 'papai'  && sid == 'papai_1')
+            || (role == 'vovo_f' && sid in ['vovo_f_1', 'vovo_f_2'])
+            || (role == 'vovo_m' && sid in ['vovo_m_1', 'vovo_m_2'])
+            || (role == 'outro'  && sid == 'outro_' + request.auth.uid);
+      }
+      match /slots/{sid} {
+        // create só acontece se a vaga NÃO existe: duas pessoas ao mesmo tempo → só uma entra
+        allow create: if signedIn() && idOk(sid)
+          && d().keys().hasOnly(['id', 'uid', 'role', 'takeover'])
+          && d().uid == request.auth.uid && validSlotId(sid, d().role)
+          && (!('takeover' in d()) || d().takeover == false);
+        // "Sou eu (troquei de celular)": só para avós/outros e de forma explícita
+        allow update: if signedIn() && idOk(sid)
+          && d().keys().hasOnly(['id', 'uid', 'role', 'takeover'])
+          && d().uid == request.auth.uid && d().role == resource.data.role
+          && d().takeover == true
+          && !(resource.data.role in ['mamae', 'papai']);
+        allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isParent());
+      }
+
+      // ---------- membros ----------
+      match /members/{uid} {
+        allow create, update: if signedIn() && request.auth.uid == uid && idOk(uid)
+          && d().keys().hasOnly(['id', 'slot', 'role', 'name', 'seen'])
+          && str(d().slot, 1, 80) && str(d().name, 1, 30) && d().seen is number
+          && existsAfter(docPath('slots', d().slot))
+          && getAfter(docPath('slots', d().slot)).data.uid == uid
+          && getAfter(docPath('slots', d().slot)).data.role == d().role;
+        allow delete: if signedIn() && (
+          request.auth.uid == uid
+          || isParent()
+          // a vaga dele passou para outro celular ("Sou eu") ou deixou de existir
+          || (resource.data.get('slot', '') != ''
+              && (!existsAfter(docPath('slots', resource.data.slot))
+                  || getAfter(docPath('slots', resource.data.slot)).data.uid != uid)));
+      }
+
+      // ---------- configurações ----------
+      match /meta/{id} {
+        allow write: if isParent() && id == 'settings' && idOk(id)
+          && d().keys().hasOnly(['id', 'babyName', 'created'])
+          && optStr('babyName', 30) && optNum('created');
+      }
+
+      // ---------- malinha ----------
+      match /lists/{id} {
+        allow create, update: if isParent() && idOk(id)
+          && d().keys().hasOnly(['id', 'name', 'order'])
+          && str(d().name, 1, 60) && optNum('order');
+        allow delete: if isParent();
+      }
+      function validItem(id) {
+        return idOk(id) && d().keys().hasOnly(['id', 'listId', 'name', 'done', 'order', 'doneBy', 'doneAt'])
+          && str(d().listId, 1, 80) && str(d().name, 1, 60) && d().done is bool
+          && optNum('order') && optStr('doneBy', 40) && optNum('doneAt');
+      }
+      match /items/{id} {
+        allow create: if isParent() && validItem(id);
+        // qualquer membro marca/desmarca; só Mamãe e Papai renomeiam
+        allow update: if validItem(id) && (isParent() || (isMember() && onlyChanged(['done', 'doneBy', 'doneAt'])));
+        allow delete: if isParent();
+      }
+
+      // ---------- remédios ----------
+      function medShape() {
+        return d().keys().hasOnly(['id', 'name', 'drops', 'perDay', 'times', 'minH', 'minGapMin', 'order',
+                                   'lastDoseId', 'prevDoseId', 'lastDoseAt', 'lastDoseBy', 'forced'])
+          && str(d().name, 1, 40)
+          && d().drops is int && d().drops >= 1 && d().drops <= 60
+          && d().perDay is int && d().perDay >= 1 && d().perDay <= 12
+          && optStr('times', 60) && optNum('order')
+          && (!('minH' in d()) || (d().minH is number && d().minH >= 0 && d().minH <= 24))
+          && (!('minGapMin' in d()) || (d().minGapMin is int && d().minGapMin >= 0 && d().minGapMin <= 1440))
+          && (!('lastDoseId' in d()) || d().lastDoseId == null || str(d().lastDoseId, 1, 80))
+          && (!('lastDoseAt' in d()) || d().lastDoseAt == null || d().lastDoseAt is timestamp)
+          && optStr('lastDoseBy', 30) && optBool('forced');
+      }
+      // dose atômica (compare-and-swap):
+      //  • prevDoseId tem que ser a última dose que o servidor conhece → se alguém deu antes, recusa
+      //  • lastDoseAt é o relógio do servidor (não dá para mentir a hora)
+      //  • sem "dose extra" explícita, respeita o intervalo mínimo
+      //  • a dose citada tem que ser criada no mesmo lote
+      function isDoseStamp() {
+        return onlyChanged(['lastDoseId', 'prevDoseId', 'lastDoseAt', 'lastDoseBy', 'forced'])
+          && d().lastDoseAt == request.time
+          && d().prevDoseId == resource.data.get('lastDoseId', null)
+          && str(d().lastDoseId, 1, 80) && d().forced is bool
+          && existsAfter(docPath('doses', d().lastDoseId))
+          && (d().forced
+              || resource.data.get('lastDoseAt', null) == null
+              || request.time > resource.data.lastDoseAt + duration.value(resource.data.get('minGapMin', 0), 'm'));
+      }
+      match /meds/{id} {
+        allow create: if isParent() && idOk(id) && medShape();
+        allow update: if idOk(id) && medShape() && (
+          (isMember() && isDoseStamp())
+          // Mamãe/Papai editam o cadastro, mas não podem "carimbar" dose sem passar pelo CAS
+          || (isParent() && !(('lastDoseAt' in d()) && d().lastDoseAt == request.time)));
+        allow delete: if isParent();
+      }
+
+      // ---------- doses ----------
+      function validDose(id) {
+        return idOk(id) && d().keys().hasOnly(['id', 'medId', 'ts', 'by', 'forced', 'voided', 'voidedBy', 'voidedAt'])
+          && str(d().medId, 1, 80) && d().ts is number && optStr('by', 40) && optBool('forced')
+          && optBool('voided') && optStr('voidedBy', 40) && optNum('voidedAt');
+      }
+      // hora informada pelo celular numa dose nova: no máximo 5 min no futuro e 24h no passado (fila offline)
+      function freshTs() { return d().ts <= request.time.toMillis() + 300000 && d().ts >= request.time.toMillis() - 86400000; }
+      match /doses/{id} {
+        allow create: if validDose(id) && (
+          // caminho normal (qualquer membro): a dose só entra junto com o carimbo no remédio (CAS)
+          (isMember() && freshTs() && !('voided' in d())
+            && getAfter(docPath('meds', d().medId)).data.get('lastDoseId', null) == id)
+          // Mamãe/Papai também importam histórico (criar família, restaurar backup)
+          || isParent());
+        // corrigir uma dose: só marcar, nunca apagar
+        allow update: if isParent() && onlyChanged(['voided', 'voidedBy', 'voidedAt'])
+          && d().voided == true && optStr('voidedBy', 40) && optNum('voidedAt');
+        // só some junto com o remédio apagado
+        allow delete: if isParent() && !existsAfter(docPath('meds', resource.data.medId));
+      }
+
+      // ---------- pendências ----------
+      function validTask(id) {
+        return idOk(id) && d().keys().hasOnly(['id', 'text', 'done', 'created', 'by', 'doneBy', 'doneAt'])
+          && str(d().text, 1, 200) && d().done is bool && optNum('created')
+          && optStr('by', 40) && optStr('doneBy', 40) && optNum('doneAt');
+      }
+      match /tasks/{id} {
+        allow create: if isMember() && validTask(id);
+        allow update: if validTask(id) && (isParent() || (isMember() && onlyChanged(['done', 'doneBy', 'doneAt'])));
+        allow delete: if isParent();
+      }
+
+      // ---------- agenda ----------
+      match /appts/{id} {
+        allow create, update: if isParent() && idOk(id)
+          && d().keys().hasOnly(['id', 'title', 'date', 'time', 'place', 'listId', 'by'])
+          && str(d().title, 1, 60) && d().date is string && d().date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+          && (!('time' in d()) || d().time == '' || (d().time is string && d().time.matches('^[0-9]{2}:[0-9]{2}$')))
+          && optStr('place', 80) && optStr('listId', 80) && optStr('by', 40);
+        allow delete: if isParent();
+      }
+
+      // ---------- avisos ----------
+      match /notes/{id} {
+        allow create, update: if isParent() && idOk(id)
+          && d().keys().hasOnly(['id', 'emoji', 'title', 'text', 'order', 'by', 'updated'])
+          && str(d().text, 1, 400) && optStr('title', 40) && optStr('emoji', 16)
+          && optNum('order') && optStr('by', 40) && optNum('updated');
+        allow delete: if isParent();
+      }
+    }
+  }
+}
