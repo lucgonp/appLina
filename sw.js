@@ -1,5 +1,5 @@
-const CACHE = 'cuidados-v6';
-const FILES = ['./', './index.html', './config.js', './manifest.webmanifest', './coelho-180.png', './coelho-192.png', './coelho-512.png'];
+const CACHE = 'cuidados-v7';
+const FILES = ['./', './index.html', './config.js', './coelho-180.png', './coelho-192.png', './coelho-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
 });
@@ -17,6 +17,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   if (url.origin !== location.origin) return; // Firestore e demais: direto na rede
+  if (url.pathname.endsWith('.png')) return;      // ícones sempre direto do servidor
   e.respondWith(
     fetch(e.request).then(r => {
       const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return r;
