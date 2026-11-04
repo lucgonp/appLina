@@ -6,8 +6,15 @@
    remédios são as regras do servidor (firestore.rules). */
 const Lock = {
   KEY: 'cuidados:unlockUntil', MIN: 10,
-  // na família, só Mamãe e Papai podem editar; fora dela (só este celular), qualquer um
-  canEdit() { return !Store.family || Members.isParent(); },
+  // Só Mamãe e Papai editam. Na família quem manda é a vaga; fora dela (celular
+  // que ainda não entrou em família nenhuma) vale o papel escolhido aqui mesmo,
+  // senão a Vovó abre o link, escolhe "Vovó" e edita tudo.
+  // Sem papel escolhido = celular recém-aberto, ainda se configurando: libera.
+  canEdit() {
+    if (Store.family) return Members.isParent();
+    const r = Members.myRole();
+    return !r || !!ROLES[r]?.parent;
+  },
   open() { return this.canEdit() && Date.now() < (lsGet(this.KEY, 0) || 0); },
   apply() {
     const open = this.open();

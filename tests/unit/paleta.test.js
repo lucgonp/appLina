@@ -63,6 +63,27 @@ for (const [modo, p] of [['claro', CLARO], ['escuro', ESCURO]]) {
   });
 }
 
+// A cortina de diálogo ficou com o ameixa da paleta antiga escrito na mão
+// (rgba(74,35,64)) e tingia a tela inteira ao abrir a escolha de papel.
+// Cor fora dos tokens não acompanha troca de paleta: trava isso.
+test('paleta: nenhuma cor fixa fora dos tokens', () => {
+  assert.ok(!/rgba?\(\s*74\s*,\s*35\s*,\s*64/.test(CSS),
+    'ameixa #4A2340 da paleta antiga ainda escrito na mão no CSS');
+  for (const [regra, trecho] of [['.dlg', /\.dlg\{[^}]*\}/], ['.scrim', /\.scrim\{[^}]*\}/]]) {
+    const m = CSS.match(trecho);
+    assert.ok(m, `regra ${regra} não encontrada`);
+    assert.match(m[0], /background:var\(--veil\)/,
+      `${regra} precisa usar var(--veil); cor fixa ali tinge a tela toda`);
+  }
+  // o veil tem que ser escuro nos dois modos: clarear a cortina inverte o efeito
+  for (const [modo, trecho] of [['claro', CSS.slice(0, iDark)], ['escuro', CSS.slice(iDark)]]) {
+    const m = trecho.match(/--veil:\s*rgba\((\d+),(\d+),(\d+)/);
+    assert.ok(m, `--veil ausente no modo ${modo}`);
+    const media = (+m[1] + +m[2] + +m[3]) / 3;
+    assert.ok(media < 90, `--veil do modo ${modo} está claro demais (média ${media})`);
+  }
+});
+
 // O token de borda nao atende 1.4.11 (3:1) nem antes nem depois da troca de paleta.
 // ponytail: congelado no valor medido para a regressao aparecer; subir para 3:1
 // engrossa divisoria e borda de card em todo o app, o que e decisao de visual.
