@@ -269,3 +269,21 @@ test('telefone escrito num aviso vira link de ligar; dose não', async ({ page }
   await expect(page.locator('.note-x a.tel')).toHaveCount(1);
   await expect(page.locator('.note-x a.tel')).toHaveAttribute('href', 'tel:+5562999990000');
 });
+
+// O .card do app não tem padding (quem tem é .fcard), então card novo nasce
+// com o conteúdo colado na borda. Pega isso antes de chegar no celular.
+test('card de emergência: nada encosta na borda, sem rolagem lateral', async ({ page }) => {
+  await start(page);
+  await page.locator('[data-tab=farm]').click();
+  const r = await page.evaluate(() => {
+    const c = document.querySelector('.emerg').getBoundingClientRect();
+    const fora = [...document.querySelectorAll('.emerg *')]
+      .map(el => el.getBoundingClientRect())
+      .filter(b => b.width > 0)
+      .filter(b => b.left < c.left + 8 || b.right > c.right - 8).length;
+    const d = document.documentElement;
+    return { fora, rolaLado: d.scrollWidth > d.clientWidth };
+  });
+  expect(r.fora).toBe(0);
+  expect(r.rolaLado).toBe(false);
+});
