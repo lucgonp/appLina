@@ -17,7 +17,9 @@ concurrency:
 jobs:
   testes:
     name: Testes
-    runs-on: ubuntu-latest
+    # fixo em 24.04: o ubuntu-latest virou 26.04 e o Playwright 1.56 nao tem WebKit
+    # pra essa versao ("Playwright does not support webkit on ubuntu26.04-x64").
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
