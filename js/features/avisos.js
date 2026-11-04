@@ -19,7 +19,7 @@ const Notes = (() => {
   const isNew = n => n.updated && Date.now() - n.updated < 24 * 3600000 && n.by !== me();
   const card = n => `<div class="note-c">
         <div class="note-e">${noteIco(n.emoji || '📌', 28)}</div>
-        <div class="note-b">${n.title ? `<p class="note-t">${esc(n.title)}</p>` : ''}<p class="note-x">${esc(n.text)}</p>
+        <div class="note-b">${n.title ? `<p class="note-t">${esc(n.title)}</p>` : ''}<p class="note-x">${Telefone.linkify(esc(n.text))}</p>
           ${n.updated ? `<small class="note-by">Atualizado ${esc(byTxt(n.by, n.updated).replace(/^Hoje/, 'hoje').replace(/^Ontem/, 'ontem'))}</small>` : ''}</div>
         <button class="sbtn eo" data-nedit="${n.id}" aria-label="Editar aviso">${ICON.pen}</button>
       </div>`;

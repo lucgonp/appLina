@@ -366,3 +366,17 @@ body:not(.locked) .lockpill{background:var(--sun-soft);color:var(--sun);box-shad
 .steps li{margin-bottom:10px}
 .steps svg{vertical-align:-3px;color:var(--accent)}
 .steps-note{color:var(--muted);font-weight:600;font-size:15px;margin:0 0 6px}
+
+/* ---------- Telefone: emergência e números dentro dos avisos ---------- */
+.emerg{margin-top:14px}
+.emerg h2{margin:0 0 10px;font-size:17px;color:var(--danger)}
+.emerg-ls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.emerg-l{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  min-height:72px;border-radius:18px;text-decoration:none;
+  background:color-mix(in srgb,var(--danger) 8%,var(--bg));color:var(--danger)}
+.emerg-l b{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.emerg-l span{font-size:13px;font-weight:700;color:var(--ink)}
+.emerg-p{margin:12px 0 0;font-size:14px;font-weight:600;color:var(--muted)}
+.emerg-p b{color:var(--ink)}
+/* número reconhecido no texto de um aviso */
+a.tel{color:var(--accent);font-weight:800;text-decoration:underline;text-underline-offset:3px}
