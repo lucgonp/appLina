@@ -57,7 +57,7 @@ const Home = (() => {
       const full = its.length && !left;
       parts.push(`<div class="hsec-h" style="margin-top:18px"><b>${ph('backpack', 20)} Malinha</b></div>
         <button class="hcard" data-goto="mala">
-          <span class="hi" style="background:${full ? 'var(--mint-soft);color:var(--mint)' : 'var(--rose-soft);color:var(--rose)'}">${ph('backpack', 22)}</span>
+          <span class="hi" style="background:${full ? 'var(--mint-soft);color:var(--mint)' : 'var(--accent-soft);color:var(--accent)'}">${ph('backpack', 22)}</span>
           <span class="hb"><b>${esc(l.name)}</b><small>${!its.length ? 'Lista vazia' : full ? 'Pronta para sair!' : `${left} ${left === 1 ? 'item faltando' : 'itens faltando'} · ${done} de ${its.length}`}</small></span>
           ${full ? '<span class="tag ok">Pronta ✓</span>' : arrow}</button>`);
     }
