@@ -237,3 +237,17 @@ test('Vovó sem família: continua marcando item da mala', async ({ page }) => {
   await expect(page.locator('#malaReset')).toBeEnabled();
   expect(await count(page, 'items')).toBe(antes); // marcar não apaga nem cria item
 });
+
+// "Cuidados da ${nome}" assumia bebê menina: com nome masculino saía
+// "Cuidados da Pedro". O "de" serve para qualquer nome.
+test('nome do bebê no cabeçalho não assume o sexo', async ({ page }) => {
+  await start(page, 'mamae');
+  await page.locator('[data-tab=fam], [data-gofam]').first().click();
+  await unlock(page, '#v-fam');
+  await page.locator('#babyName').fill('Pedro');
+  await page.locator('#babyName').blur();
+  await expect(page.locator('[data-hello]').first()).toHaveText('Cuidados de Pedro ♡');
+  await page.locator('#babyName').fill('');
+  await page.locator('#babyName').blur();
+  await expect(page.locator('[data-hello]').first()).toHaveText('Cuidados do bebê ♡');
+});

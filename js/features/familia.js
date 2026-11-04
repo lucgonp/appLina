@@ -6,7 +6,7 @@ const Fam = (() => {
   const settings = () => Store.get('meta', 'settings') || { id: 'settings' };
   function render() {
     const name = (settings().babyName || '').trim();
-    document.querySelectorAll('[data-hello]').forEach(el => { el.textContent = name ? `Cuidados da ${name} ♡` : 'Cuidados do bebê ♡'; });
+    document.querySelectorAll('[data-hello]').forEach(el => { el.textContent = name ? `Cuidados de ${name} ♡` : 'Cuidados do bebê ♡'; });
     if (document.activeElement !== $('babyName')) $('babyName').value = name;
     $('syncDot').hidden = !(Store.family && Store.status === 'ok');
 
