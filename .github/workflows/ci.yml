@@ -1,0 +1,75 @@
+# Testa tudo e só publica no GitHub Pages se todos os testes passarem.
+name: Testes e publicação
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  testes:
+    name: Testes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: actions/setup-java@v4   # o Firestore Emulator precisa de Java
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci
+
+      - name: Unitários — regra de segurança de dose
+        run: npm run test:unit
+
+      - name: Integração — regras do servidor (Firestore Emulator, inclui corridas)
+        run: npm run test:rules
+
+      - name: Instalar navegadores (WebKit = Safari do iPhone, Chromium = Android)
+        run: npx playwright install --with-deps webkit chromium
+
+      - name: Ponta a ponta — iPhone e Android simulados
+        run: npm run test:e2e
+
+      - name: Relatório dos testes (se falhar)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-playwright
+          path: playwright-report
+          retention-days: 7
+
+  publicar:
+    name: Publicar no GitHub Pages
+    needs: testes
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tests/build-site.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
