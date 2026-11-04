@@ -251,3 +251,21 @@ test('nome do bebê no cabeçalho não assume o sexo', async ({ page }) => {
   await page.locator('#babyName').blur();
   await expect(page.locator('[data-hello]').first()).toHaveText('Cuidados do bebê ♡');
 });
+
+test('Remédios: números de emergência discam direto', async ({ page }) => {
+  await start(page);
+  await page.locator('[data-tab=farm]').click();
+  await expect(page.locator('.emerg-l[href="tel:192"]')).toBeVisible();
+  await expect(page.locator('.emerg-l[href="tel:193"]')).toBeVisible();
+});
+
+test('telefone escrito num aviso vira link de ligar; dose não', async ({ page }) => {
+  await start(page);
+  await page.evaluate(() => {
+    Store.put('notes', { id: 'n1', emoji: '📌', title: 'Pediatra',
+      text: 'Dra. Ana (62) 99999-0000. Dar 180 ml e 6-8 gotas às 20:00.' });
+    render();
+  });
+  await expect(page.locator('.note-x a.tel')).toHaveCount(1);
+  await expect(page.locator('.note-x a.tel')).toHaveAttribute('href', 'tel:+5562999990000');
+});
