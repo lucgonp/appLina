@@ -201,3 +201,39 @@ test('manifest válido para o Android instalar', async ({ request }) => {
   expect(sizes).toContain('512x512');
   for (const i of m.icons) expect((await request.get('/' + i.src)).ok()).toBeTruthy();
 });
+
+// Celular que ainda não entrou em família nenhuma: antes, a trava liberava
+// edição para qualquer papel, então a Vovó abria o link e editava remédio.
+test('Vovó sem família: só leitura, sem botão de editar', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+  await page.reload();
+  await page.locator('[data-role=vovo_f]').click();
+  await page.locator('#roleName').fill('Cida');
+  await page.locator('[data-rolesave]').click();
+  await expect(page.locator('#homeTitle')).toContainText('Olá');
+
+  expect(await page.evaluate(() => Lock.canEdit())).toBe(false);
+  await expect(page.locator('body')).toHaveClass(/viewer/);
+  await expect(page.locator('#v-home [data-lock]')).toBeHidden();
+
+  // recusa explícita ao tentar editar remédio, em vez de abrir o formulário
+  await page.locator('[data-tab=farm]').click();
+  expect(await page.evaluate(() => Lock.ask())).toBe(false);
+  await expect(page.locator('.dbox')).toContainText('Só a Mamãe e o Papai');
+});
+
+test('Vovó sem família: continua marcando item da mala', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+  await page.reload();
+  await page.locator('[data-role=vovo_f]').click();
+  await page.locator('#roleName').fill('Cida');
+  await page.locator('[data-rolesave]').click();
+
+  await page.locator('[data-tab=mala]').click();
+  const antes = await count(page, 'items');
+  await page.locator('#v-mala li').first().click();
+  await expect(page.locator('#malaReset')).toBeEnabled();
+  expect(await count(page, 'items')).toBe(antes); // marcar não apaga nem cria item
+});
